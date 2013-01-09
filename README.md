@@ -8,4 +8,6 @@ DOHS
 
 The app also shows the most probable location of each teacher based on the teachers schedule. The location of students can be shown as well if the student makes the information available.
 
-The app has a notification function that can be personalized by the user. For example, the user can ask the app to notify when person X is in room 301. 
+The app has a notification function that can be personalized by the user. For example, the user can ask the app to notify when person X is in room 301.
+
+-- 
