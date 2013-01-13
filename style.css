@@ -8,10 +8,19 @@ body {
 	padding-left: 12px;
 }
 
+
 #svg {
 	border-style: solid;
 
 }
+
+#home{
+	font-size: 30px;
+}
+
+.indent{
+	padding-left: 40px;
+}	
 
 a:link {
 	color: white;
@@ -21,9 +30,6 @@ a:hover {
 	color: green;
 }
 
-#home{
-	font-size: 30px;
-}
 
 ul#navigation {
 	width:15px;
@@ -49,4 +55,3 @@ ul#navigation li a:hover{
 ul#navigation li a:active{
 	color:#99FFCC;
 }
-
