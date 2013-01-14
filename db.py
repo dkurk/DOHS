@@ -41,7 +41,7 @@ Function:  get_teacher_schedule(string teacher)
 Purpose: Return the schedule array for the given teacher.
 Return: Returns the schedule array if the teacher is in the db, otherwise returns 0.   
 
-Last edited: 1/8/12 at 12:24 by Oliver Ball
+Last edited: 1/8/13 at 12:24 by Oliver Ball
 """
 
 def get_teacher_schedule(teacher):
@@ -55,21 +55,47 @@ def get_teacher_schedule(teacher):
 
 """
 Function:  floor(int room)
-Purpose: Return the floor that a room is located on. Basically just a shortcut so you don't have to do the conversion later. Kind of pointless but hey
+Purpose: Return the floor that a room is located on. Basically just a shortcut so you don't have to do the conversion later. Kind of pointless but hey.
 Return: An int of which floor the room is on.
 
-Last edited: 1/8/12 at 12:24 by Oliver Ball
+Last edited: 1/8/13 at 12:24 by Oliver Ball
 """
 def floor(room):
     return room/100
+
+
+"""
+Function:  create_user(string first, string last, string grade, something schedule)
+Input: 
+Purpose: Create an account for a user given their signup information, and then store it in the shelf.
+Return: 1 if succesful 0 if unsuccesful
+
+Last edited: 1/14/13 at 12:26 by Oliver Ball
+"""
+def create_user(first, last, grade, schedule):
+    
+
+
+"""
+Function:  make_student_schedule(stuff)
+Purpose: Take schedule input from newprofile.html, and turn it into something usable by create_user().
+Return: TBD
+
+Last edited: 1/14/13 at 12:26 by Oliver Ball
+"""
+
+def make_student_schedule(tmp):
+    return 0
 
 
 
 if __name__ == "__main__":
     x = add_teacher('Oliver')
     print x
-
-    x = get_floor(403)
+    
+    x = floor(403)
+    print x
+    x = floor(1023)
     print x
 
 
