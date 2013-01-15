@@ -1,6 +1,6 @@
 from flask import request,Flask,render_template, url_for,redirect,request
 import urllib2,json
-import db.py
+#import db
 
 app = Flask(__name__)
 
