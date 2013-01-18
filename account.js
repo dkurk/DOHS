@@ -23,3 +23,20 @@ var makeRoomList = function() {
     rmlist.append($("#rm9").val);
     rmlist.append($("#rm10").val);*/
 }
+
+var createAccount = function() {
+    var p1 = new person($("#idnum").value, $("#first").value, $("#last").value, $("#grade").value, makeRooms());
+    saveAccount(p1);
+}
+
+$("#submit").click(createAccount);
+
+
+
+var saveAccount = function(p1) {
+    $.getJSON("/saveData", {person:p1}, function(bool) {
+	if (bool)
+	    $("#message").text("Sorry, an account by that ID already exists. Please sign up another account.");
+    });
+}
+
