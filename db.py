@@ -29,7 +29,7 @@ Return: 1
 Last edited: 1/9/13 at 12:02 by Oliver Ball
 """
 
-def add_room(teacher, period, room):
+ef add_room(teacher, period, room):
     db = shelve.open('teachers.db')
     db[teacher][period] = room
     db.close()
@@ -72,9 +72,21 @@ Return: 1 if succesful 0 if unsuccesful
 
 Last edited: 1/14/13 at 12:26 by Oliver Ball
 """
-def create_user(first, last, grade, schedule):
+def create_user(ID, first, last, grade, schedule):
+    value = 0
+    if (not ID in db):
+        db = shelve.open("students.db")
+        user = []
+        user.append(first)#student[0] is the first name
+        user.append(last)#student[1] is the last name
+        user.append(grade)#student[2] is the grade
+        user.append(schedule)#student[3] is the schedule
+        db[ID] = user
+        value = 1;
     
-
+    db.close()
+    return value
+    
 
 """
 Function:  make_student_schedule(stuff)
