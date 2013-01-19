@@ -60,8 +60,8 @@ var loadMaps = function() {
 var getProfile = function() {
 
     var myID = $(this).attr("id");
-    $.get("/getProfile", {id:myID}, function(person) {
-	$("#profile").text(person);
+    $.getJSON("/getProfile", {id:myID}, function(person) {
+	$("#profile").text(JSON.stringify(person));
     });
 
 }
