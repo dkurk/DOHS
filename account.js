@@ -1,7 +1,7 @@
 var person = function(id, first, last, grade, rooms) {
     this.id = id;
     this.first = first;
-    this. last = last;
+    this.last = last;
     this.grade = grade;
     this.rooms = rooms;
 }
