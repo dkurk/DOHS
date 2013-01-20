@@ -21,7 +21,7 @@ def requireauth(page):
 
 
 @app.route("/login",methods=['GET','POST'])
-@requireauth("/FloorMaps")
+@requireauth("/maps")
 def login():
     if request.method=='GET':
         return render_template('login.html')
@@ -37,21 +37,20 @@ def login():
         elif button = 'Register':
             return redirect(url_for('account'))
 
+@app.route("/account")
+def account():
+    return render_template("account.html",ID=session['id'])
+
+@requireauth("/maps")
 @app.route("/logout")
 def logout():
     session.pop('ID',None)
     return redirect("/login")
 
-@app.route("/FloorMaps")
-@requireauth("/FloorMaps")
-def FloorMaps():
-    return render_template("FloorMaps.html",ID=session['id'])
-
-
-@app.route("/account")
-@requireauth("/account")
-def account():
-    return render_template("account.html",ID=session['id'])
+@app.route("/maps")
+@requireauth("maps")
+def maps():
+    return render_template("maps.html",ID=session['id'])
 
 #perhaps not necessary
 @app.route("/<page>")
@@ -62,22 +61,6 @@ def page(page="index"):
 
 @app.route("/getPeople")
 def getPeople():
-    #transfer to db.py
-    result = []
-    database = []
-    
-    for i in range(0, 10):
-        result.append([])
-        for j in range(0, 10):
-            result[i].append({})
-            
-    for person in database:
-        for k in range(0, 10):
-            room = database[person][k]
-            floor = db.floor(room)
-            result[floor][k][person] = room
-    #end transfer to db.py
-
     result = db.getPeople()
     return json.dumps(result)
 
