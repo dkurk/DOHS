@@ -13,15 +13,14 @@ def requireauth(page):
         def wrapper(*args,**kwargs):
             if 'ID' not in session:
                 session['redirectpage']=page
-                return redirect("/login")
+                return redirect("/")
             else:
                 return f(*args,**kwargs)
         return wrapper
     return decorator
 
 
-@app.route("/login",methods=['GET','POST'])
-@requireauth("/maps")
+@app.route("/",methods=['GET','POST'])
 def login():
     if request.method=='GET':
         return render_template('login.html')
@@ -29,36 +28,43 @@ def login():
         ID = request.form['ID']
         button = request.form['button']
         if button == 'Login':
-            #need ifUserExists(ID) method from db.py
-            if db.ifUserExists(ID):
-                session['ID'] = ID
+            #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
+            #also check if field is not empty
+            session['ID'] = ID
+            if session['redirectpage']:
                 return redirect(session['redirectpage'])
             else:
-                return redirect(url_for('account'))
+                return redirect(url_for('maps'))
         elif button == 'Register':
             return redirect(url_for('account'))
 
-@app.route("/account")
+@app.route("/account",methods=['GET','POST'])
 def account():
-    return render_template("account.html",ID=session['id'])
+    if request.method=='GET':
+        return render_template("account.html")
 
-@requireauth("/maps")
-@app.route("/logout")
-def logout():
-    session.pop('ID',None)
-    return redirect("/login")
 
-@app.route("/maps")
+@app.route("/maps",methods=['GET','POST'])
 @requireauth("maps")
 def maps():
-    return render_template("maps.html",ID=session['id'])
+    if request.method=='GET':
+        return render_template("maps.html")
+    else:
+        button = request.form['button']
+        if button == "Logout":
+            return redirect(url_for('logout'))
+
+@app.route("/logout")
+#@requireauth("/maps")
+def logout():
+    session.pop('ID',None)
+    return redirect("/")
 
 #perhaps not necessary
 @app.route("/<page>")
 def page(page="index"):
     page="%s.html"%(page)
     return render_template(page)
-
 
 @app.route("/getPeople")
 def getPeople():
@@ -67,33 +73,32 @@ def getPeople():
 
 @app.route("/getProfile")
 def getProfile():
-    #idnum = request.args.get('id', '')
-    idnum = 8751
+    idnum = request.args.get('id', '')
     result = db.getProfile(idnum)
     return json.dumps(result)
 
 @app.route("/saveData")
 def saveData():
-    #person = request.args.get('person', '')
-    person = {'id':8751 , 'first':"Helen", 'last':"Nie", 'grade':12, 'rooms':[000,111,222,333,444,555,666,777,888,999]}
-    boolean = db.createUser(person['id'], person['first'], person['last'], person['grade'], person['schedule'])
+    person = request.args.get('person', '')
+    boolean = db.create_user(person['id'], person['first'], person['last'], person['grade'], person['rooms'])
     if boolean == 1:
         return json.dumps(True)
     else:
         return json.dumps(False)
 
 @app.route("/getLocsByGrade")
-def getLocsByGrade():
+def getPeopleByGrade():
     #grade = request.args.get('grade', '')
-    #result = db.getLocsByGrade(grade)
-    result = 'getLocsByGrade result'
+    #result = db.getPeopleByGrade(grade)
+    result = 'getPeopleByGrade result'
     return json.dumps(result)
 
 if __name__ == "__main__":
     app.debug=True
-    #app.run()
-    print saveData()
-    print
-    print getPeople()
-    print
-    print getProfile()
+    app.run()
+    
+    #print saveData()
+    #print
+    #print getPeople()
+    #print
+    #print getProfile()
