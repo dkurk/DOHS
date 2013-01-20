@@ -45,7 +45,7 @@ def account():
 
 
 @app.route("/maps",methods=['GET','POST'])
-@requireauth("maps")
+#@requireauth("maps")
 def maps():
     if request.method=='GET':
         return render_template("maps.html")
