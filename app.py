@@ -76,8 +76,11 @@ def getProfile():
 def saveData():
     #person = request.args.get('person', '')
     person = {'id':8751 , 'first':"Helen", 'last':"Nie", 'grade':12, 'rooms':[000,111,222,333,444,555,666,777,888,999]}
-    boolean = db.saveData(person)
-    return json.dumps(boolean)
+    boolean = db.createUser(person['id'], person['first'], person['last'], person['grade'], person['schedule'])
+    if boolean == 1:
+        return json.dumps(True)
+    else:
+        return json.dumps(False)
 
 @app.route("/getLocsByGrade")
 def getLocsByGrade():
