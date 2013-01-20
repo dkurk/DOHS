@@ -17,7 +17,8 @@ Last edited: 1/8/13 at 12:24 by Oliver Ball
 def add_teacher(ID, first, last, schedule ):
     db = shelve.open('teachers.db')
     value = 0
-    
+    ID = str(ID)
+
     if (not ID in db):
         teacher = []
 
@@ -43,9 +44,10 @@ Return: 1
 Last edited: 1/9/13 at 12:02 by Oliver Ball
 """
 
-def edit_room(teacher, period, room):
+def edit_room(ID, period, room):
+    ID = str(ID)
     db = shelve.open('teachers.db')
-    db[teacher][period] = room
+    db[ID][period] = room
     db.close()
     return 1
 
@@ -58,10 +60,11 @@ Return: Returns the schedule array if the teacher is in the db, otherwise return
 Last edited: 1/8/13 at 12:24 by Oliver Ball
 """
 
-def get_teacher_schedule(teacher):
+def get_teacher_schedule(ID):
+    ID = str(ID)
     db = shelve.open('teachers.db')
     value = 0;
-    if teacher in db:
+    if ID in db:
         value = db['teacher']
     db.close()
     return value
@@ -89,6 +92,7 @@ Last edited: 1/14/13 at 12:26 by Oliver Ball
 def create_user(ID, first, last, grade, schedule):
     value = 0
     db = shelve.open('students.db')
+    ID = str(ID)
     if (not ID in db):
         user = []
         user.append(ID)#student[0] is the ID
@@ -116,6 +120,8 @@ Last edited: 1/14/13 at 12:26 by Oliver Ball
 
 
 def getProfile(ID):
+    ID = str(ID)
+
     students = shelve.open('students.db')
     teachers = shelve.open('teachers.db')
     value = 0
@@ -176,7 +182,7 @@ def translate_master():
     
 
 if __name__ == "__main__":
-    x = add_teacher('Oliver')
+    x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
     print x
     
     x = floor(403)
