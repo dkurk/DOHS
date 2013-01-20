@@ -189,7 +189,7 @@ if __name__ == "__main__":
 #to do:
 #return dictionary which is a copy of db
 
-#1. getPeople: returns a dictionary of ID numbers. each ID number is a dictionary with first name, last name, and classroom number. (The code thats in app.py's getPeople method that I told you to take before isnt needed anymore lol)
+
 
 #3. saveData(person): saves the person in parameter into database. returns true if person is saved successfully, false if person already exists in database
 
