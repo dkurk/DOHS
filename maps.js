@@ -70,4 +70,4 @@ var getProfile = function() {
 $(document).ready(function() {
     loadMaps();
     $(".person").click(getProfile);
-}
+});
