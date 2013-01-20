@@ -11,7 +11,7 @@ def requireauth(page):
     def decorator(f):
         @wraps(f)
         def wrapper(*args,**kwargs):
-            if 'username' not in session:
+            if 'ID' not in session:
                 session['redirectpage']=page
                 return redirect("/login")
             else:
@@ -21,30 +21,37 @@ def requireauth(page):
 
 
 @app.route("/login",methods=['GET','POST'])
+@requireauth("/FloorMaps")
 def login():
     if request.method=='GET':
         return render_template('login.html')
     else:
-        session['username']=request.form['username']
-        return redirect(session['redirectpage'])
+        ID = request.form['ID']
+        button = request.form['button']
+        if button = 'Login':
+            if db.ifUserExists(ID):
+                session['ID'] = ID
+                return redirect(session['redirectpage'])
+            else:
+                return redirect(url_for('account'))
+        elif button = 'Register':
+            return redirect(url_for('account'))
 
 @app.route("/logout")
 def logout():
-    session.pop('username',None)
+    session.pop('ID',None)
     return redirect("/login")
 
 @app.route("/FloorMaps")
 @requireauth("/FloorMaps")
-def index():
-    
-    return render_template("FloorMaps.html",name=session['username'])
+def FloorMaps():
+    return render_template("FloorMaps.html",ID=session['id'])
 
 
-@app.route("/newProfile")
-@requireauth("/newProfile")
-def two():
-    
-    return render_template("newProfile.html",name=session['username'])
+@app.route("/account")
+@requireauth("/account")
+def account():
+    return render_template("account.html",ID=session['id'])
 
 #perhaps not necessary
 @app.route("/<page>")
