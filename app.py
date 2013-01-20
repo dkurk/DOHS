@@ -28,13 +28,14 @@ def login():
     else:
         ID = request.form['ID']
         button = request.form['button']
-        if button = 'Login':
+        if button == 'Login':
+            #need ifUserExists(ID) method from db.py
             if db.ifUserExists(ID):
                 session['ID'] = ID
                 return redirect(session['redirectpage'])
             else:
                 return redirect(url_for('account'))
-        elif button = 'Register':
+        elif button == 'Register':
             return redirect(url_for('account'))
 
 @app.route("/account")
@@ -66,13 +67,15 @@ def getPeople():
 
 @app.route("/getProfile")
 def getProfile():
-    id = request.args.get('id', '')
-    result = db.getProfile(id)
+    #idnum = request.args.get('id', '')
+    idnum = 8751
+    result = db.getProfile(idnum)
     return json.dumps(result)
 
 @app.route("/saveData")
 def saveData():
-    person = request.args.get('person', '')
+    #person = request.args.get('person', '')
+    person = {'id':8751 , 'first':"Helen", 'last':"Nie", 'grade':12, 'rooms':[000,111,222,333,444,555,666,777,888,999]}
     boolean = db.saveData(person)
     return json.dumps(boolean)
 
@@ -86,8 +89,8 @@ def getLocsByGrade():
 if __name__ == "__main__":
     app.debug=True
     #app.run()
-    print getAllLocs()
+    print saveData()
     print
-    print getLocsByGrade()
+    print getPeople()
     print
-    print getLocsByID()
+    print getProfile()
