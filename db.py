@@ -1,6 +1,6 @@
 import shelve
 
-grades = {'Freshman' : 9,
+gradelist = {'Freshman' : 9,
             'Sophomore' : 10,
             'Junior' : 11,
             'Senior' : 12,
@@ -107,7 +107,7 @@ def create_user(ID, first, last, grade, schedule):
 
 """
 Function:  getProfile(int ID)
-Input: 
+Input: An int ID corresponding to the person you want to get
 Purpose: Get the account array of a person of id = ID
 Return: The account array if the Profile exists, 0 if unsuccesful
 
@@ -130,6 +130,26 @@ def getProfile(ID):
     teachers.close()
     return value
 
+"""
+Function:  getPeople()
+Input: None
+Purpose: Return a complete dictionary of all teachers and students. This relies on students and teachers not having any overlapping ID's, but that shouldn't be an issue.
+Return: A dictionary with dict[ID] corresponding to each teacher and student
+
+Last edited: 1/14/13 at 12:26 by Oliver Ball
+"""
+
+def getPeople():
+    students = shelve.open('students.db')
+    teachers = shelve.open('teachers.db')
+    
+    a = list(students.items())
+    b = list(teachers.items())
+
+    dictionary = dict(a + b)
+
+    return dictionary
+    
 
 """
 Function:  get_students_by_grade(grade)
@@ -165,12 +185,11 @@ if __name__ == "__main__":
     print "What floor is 403 on? : " + str(x)
 
 
+
 #to do:
 #return dictionary which is a copy of db
 
 #1. getPeople: returns a dictionary of ID numbers. each ID number is a dictionary with first name, last name, and classroom number. (The code thats in app.py's getPeople method that I told you to take before isnt needed anymore lol)
-
-#2. getProfile(id): returns the profile of the person with the id in parameter
 
 #3. saveData(person): saves the person in parameter into database. returns true if person is saved successfully, false if person already exists in database
 
