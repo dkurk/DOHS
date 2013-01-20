@@ -11,40 +11,54 @@ def requireauth(page):
     def decorator(f):
         @wraps(f)
         def wrapper(*args,**kwargs):
-            if 'username' not in session:
+            if 'ID' not in session:
                 session['redirectpage']=page
-                return redirect("/login")
+                return redirect("/")
             else:
                 return f(*args,**kwargs)
         return wrapper
     return decorator
 
 
-@app.route("/login",methods=['GET','POST'])
+@app.route("/",methods=['GET','POST'])
 def login():
     if request.method=='GET':
         return render_template('login.html')
     else:
-        session['username']=request.form['username']
-        return redirect(session['redirectpage'])
+        ID = request.form['ID']
+        button = request.form['button']
+        if button == 'Login':
+            #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
+            #also check if field is not empty
+            session['ID'] = ID
+            if session['redirectpage']:
+                return redirect(session['redirectpage'])
+            else:
+                return redirect(url_for('maps'))
+        elif button == 'Register':
+            return redirect(url_for('account'))
+
+@app.route("/account",methods=['GET','POST'])
+def account():
+    if request.method=='GET':
+        return render_template("account.html")
+
+
+@app.route("/maps",methods=['GET','POST'])
+@requireauth("maps")
+def maps():
+    if request.method=='GET':
+        return render_template("maps.html")
+    else:
+        button = request.form['button']
+        if button == "Logout":
+            return redirect(url_for('logout'))
 
 @app.route("/logout")
+#@requireauth("/maps")
 def logout():
-    session.pop('username',None)
-    return redirect("/login")
-
-@app.route("/FloorMaps")
-@requireauth("/FloorMaps")
-def index():
-    
-    return render_template("FloorMaps.html",name=session['username'])
-
-
-@app.route("/newProfile")
-@requireauth("/newProfile")
-def two():
-    
-    return render_template("newProfile.html",name=session['username'])
+    session.pop('ID',None)
+    return redirect("/")
 
 #perhaps not necessary
 @app.route("/<page>")
@@ -52,48 +66,39 @@ def page(page="index"):
     page="%s.html"%(page)
     return render_template(page)
 
-
-@app.route("/getAllLocs")
-def getAllLocs():
-    #transfer to db.py
-    result = []
-    database = []
-    
-    for i in range(0, 10):
-        result.append([])
-        for j in range(0, 10):
-            result[i].append({})
-            
-    for teacher in database:
-        for k in range(0, 10):
-            room = database[teacher][k]
-            #floor = db.floor(room)
-            floor = room / 100 
-            result[floor][k][teacher] = room
-
-    #result = db.getAllLocs()
+@app.route("/getPeople")
+def getPeople():
+    result = db.getPeople()
     return json.dumps(result)
 
+@app.route("/getProfile")
+def getProfile():
+    idnum = request.args.get('id', '')
+    result = db.getProfile(idnum)
+    return json.dumps(result)
+
+@app.route("/saveData")
+def saveData():
+    person = request.args.get('person', '')
+    boolean = db.create_user(person['id'], person['first'], person['last'], person['grade'], person['rooms'])
+    if boolean == 1:
+        return json.dumps(True)
+    else:
+        return json.dumps(False)
+
 @app.route("/getLocsByGrade")
-def getLocsByGrade():
+def getPeopleByGrade():
     #grade = request.args.get('grade', '')
-    #result = db.getLocsByGrade(grade)
-    result = 'getLocsByGrade result'
+    #result = db.getPeopleByGrade(grade)
+    result = 'getPeopleByGrade result'
     return json.dumps(result)
-
-@app.route("/getLocsByGrade")
-def getLocsByID():
-    #id = request.args.get('id', '')
-    #result = db.getLocsByID(id)
-    result = 'getLocsByID result'
-    return json.dumps(result)
-
 
 if __name__ == "__main__":
     app.debug=True
-    #app.run()
-    print getAllLocs()
-    print
-    print getLocsByGrade()
-    print
-    print getLocsByID()
+    app.run()
+    
+    #print saveData()
+    #print
+    #print getPeople()
+    #print
+    #print getProfile()
