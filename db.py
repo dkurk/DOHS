@@ -1,5 +1,11 @@
 import shelve
 
+grades = {'Freshman' : 9,
+            'Sophomore' : 10,
+            'Junior' : 11,
+            'Senior' : 12,
+            }
+
 """
 Function:  add_teacher(string teacher) 
 Purpose: Add a slot in the database for a teacher. Works reg
@@ -8,28 +14,36 @@ Return: 1 if the teacher was added, 0 if the teacher was already in the db.
 Last edited: 1/8/13 at 12:24 by Oliver Ball
 """
 
-def add_teacher(teacher):
+def add_teacher(ID, first, last, schedule ):
     db = shelve.open('teachers.db')
     value = 0
-    if not(teacher in db):
-        db[teacher] = []
-        for i in range(10):
-            db[teacher].append(-1) 
-        value = 1;
+    
+    if (not ID in db):
+        teacher = []
 
+        teacher.append(ID)#teacher[0] is the ID
+        teacher.append(first)#teacher[1] is the first name
+        teacher.append(last)#teacher[2] is the last name
+        teacher.append(0)#teacher[3] is the 'grade'
+        teacher.append(schedule)#student[4] is the schedule
+
+        db[ID] = teacher
+        value = 1;
+        
+        
     db.close();
     return value
 
 
 """
-Function:  add_room(string teacher, int period, int room) 
+Function:  edit_room(string teacher, int period, int room) 
 Purpose: Add/change what room a teacher is in during a certain period.
 Return: 1
 
 Last edited: 1/9/13 at 12:02 by Oliver Ball
 """
 
-ef add_room(teacher, period, room):
+def edit_room(teacher, period, room):
     db = shelve.open('teachers.db')
     db[teacher][period] = room
     db.close()
@@ -74,13 +88,16 @@ Last edited: 1/14/13 at 12:26 by Oliver Ball
 """
 def create_user(ID, first, last, grade, schedule):
     value = 0
+    db = shelve.open('students.db')
     if (not ID in db):
-        db = shelve.open("students.db")
         user = []
-        user.append(first)#student[0] is the first name
-        user.append(last)#student[1] is the last name
-        user.append(grade)#student[2] is the grade
-        user.append(schedule)#student[3] is the schedule
+        user.append(ID)#student[0] is the ID
+        user.append(first)#student[1] is the first name
+        user.append(last)#student[2] is the last name
+        
+        user.append(grade)#student[3] is the grade
+        
+        user.append(schedule)#student[4] is the schedule
         db[ID] = user
         value = 1;
     
@@ -89,27 +106,73 @@ def create_user(ID, first, last, grade, schedule):
     
 
 """
-Function:  make_student_schedule(stuff)
-Purpose: Take schedule input from newprofile.html, and turn it into something usable by create_user().
-Return: TBD
+Function:  getProfile(int ID)
+Input: 
+Purpose: Get the account array of a person of id = ID
+Return: The account array if the Profile exists, 0 if unsuccesful
 
 Last edited: 1/14/13 at 12:26 by Oliver Ball
 """
 
-def make_student_schedule(tmp):
-    return 0
+
+def getProfile(ID):
+    students = shelve.open('students.db')
+    teachers = shelve.open('teachers.db')
+    value = 0
+    
+    if ID in students:
+        value = students[ID]
+        
+    elif ID in teachers:
+        value = teachers[ID]
+    
+    students.close()
+    teachers.close()
+    return value
 
 
+"""
+Function:  get_students_by_grade(grade)
+Purpose: Get every student in a given grade. Right now the grade should be a string, but this can be changed to an array if needs be.
+Return: An array containing every student matching the criteria.
+
+Last edited: 1/14/13 at 12:26 by Oliver Ball
+"""
+
+def get_students_by_grade(grade):
+    db = shelve.open("students.db")
+    students = []
+    for user in db:
+        if db[user][2] == grade:
+            students.append(db[user])
+
+    return students
+
+def translate_master():
+    file = open("master")
+    
+    
+    line = file.readline()
+    
 
 if __name__ == "__main__":
     x = add_teacher('Oliver')
     print x
     
     x = floor(403)
-    print x
+    print "What floor is 403 on? : " + str(x)
     x = floor(1023)
-    print x
+    print "What floor is 403 on? : " + str(x)
 
 
 #to do:
 #return dictionary which is a copy of db
+
+#1. getPeople: returns a dictionary of ID numbers. each ID number is a dictionary with first name, last name, and classroom number. (The code thats in app.py's getPeople method that I told you to take before isnt needed anymore lol)
+
+#2. getProfile(id): returns the profile of the person with the id in parameter
+
+#3. saveData(person): saves the person in parameter into database. returns true if person is saved successfully, false if person already exists in database
+
+#translation of master file
+#toString file
