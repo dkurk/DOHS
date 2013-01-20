@@ -53,8 +53,8 @@ def page(page="index"):
     return render_template(page)
 
 
-@app.route("/getAllLocs")
-def getAllLocs():
+@app.route("/getPeople")
+def getPeople():
     #transfer to db.py
     result = []
     database = []
@@ -64,15 +64,27 @@ def getAllLocs():
         for j in range(0, 10):
             result[i].append({})
             
-    for teacher in database:
+    for person in database:
         for k in range(0, 10):
-            room = database[teacher][k]
-            #floor = db.floor(room)
-            floor = room / 100 
-            result[floor][k][teacher] = room
+            room = database[person][k]
+            floor = db.floor(room)
+            result[floor][k][person] = room
+    #end transfer to db.py
 
-    #result = db.getAllLocs()
+    result = db.getPeople()
     return json.dumps(result)
+
+@app.route("/getProfile")
+def getProfile():
+    id = request.args.get('id', '')
+    result = db.getProfile(id)
+    return json.dumps(result)
+
+@app.route("/saveData")
+def saveData():
+    person = request.args.get('person', '')
+    boolean = db.saveData(person)
+    return json.dumps(boolean)
 
 @app.route("/getLocsByGrade")
 def getLocsByGrade():
@@ -80,14 +92,6 @@ def getLocsByGrade():
     #result = db.getLocsByGrade(grade)
     result = 'getLocsByGrade result'
     return json.dumps(result)
-
-@app.route("/getLocsByGrade")
-def getLocsByID():
-    #id = request.args.get('id', '')
-    #result = db.getLocsByID(id)
-    result = 'getLocsByID result'
-    return json.dumps(result)
-
 
 if __name__ == "__main__":
     app.debug=True
