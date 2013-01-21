@@ -80,6 +80,7 @@ def getProfile():
 @app.route("/saveData")
 def saveData():
     person = request.args.get('person', '')
+    #if you try printing person here, its empty
     boolean = db.create_user(person['id'], person['first'], person['last'], person['grade'], person['rooms'])
     if boolean == 1:
         return json.dumps(True)
