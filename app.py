@@ -79,9 +79,14 @@ def getProfile():
 
 @app.route("/saveData")
 def saveData():
-    person = request.args.get('person', '')
+    myID = request.args.get('id', '')
+    myFirst = request.args.get('first', '')
+    myLast = request.args.get('last', '')
+    myGrade = request.args.get('grade', '')
+    myRooms = request.args.get('rooms', '')
+    print myID, myFirst, myLast, myGrade, myRooms
     #if you try printing person here, its empty
-    boolean = db.create_user(person['id'], person['first'], person['last'], person['grade'], person['rooms'])
+    boolean = db.create_user(myID, myFirst, myLast, myGrade, myRooms)
     if boolean == 1:
         return json.dumps(True)
     else:

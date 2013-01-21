@@ -34,7 +34,7 @@ var createAccount = function() {
 
 
 var saveAccount = function(p1) {
-    $.getJSON("/saveData", {person:p1}, function(bool) {
+    $.getJSON("/saveData", {id:p1['id'], first:p1['first'], last:p1['last'], grade:p1['grade'], rooms:p1['rooms']}, function(bool) {
 	if (bool)
 	    $("#message").text("Sorry, an account by that ID already exists. Please sign up another account.");
     });
