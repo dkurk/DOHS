@@ -27,12 +27,14 @@ var makeRoomList = function() {
 var createAccount = function() {
     var p1 = new person($("#idnum")[0].value, $("#first")[0].value, $("#last")[0].value, $("#grade")[0].value, makeRoomList());
     console.log(JSON.stringify(p1));
+    //var p1 = {"id":$("#idnum")[0].value, "first":$("#first")[0].value, "last": $("#last")[0].value, "grade":$("#grade")[0].value, "rooms": makeRoomList()}
+    //console.log(p1)
     saveAccount(p1);
 }
 
 
 var saveAccount = function(p1) {
-    $.getJSON("/saveData", {person:p1}, function(bool) {
+    $.getJSON("/saveData", {id:p1['id'], first:p1['first'], last:p1['last'], grade:p1['grade'], rooms:p1['rooms']}, function(bool) {
 	if (bool)
 	    $("#message").text("Sorry, an account by that ID already exists. Please sign up another account.");
     });
