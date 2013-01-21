@@ -297,6 +297,25 @@ def dump():
     db.close()
 
 
+"""
+Function: userExists(int/string ID)
+Purpose: Just prints out a dump of the database. Simple stuff. Checks to see if the ID is in the db
+Return: True if there, False if not.
+
+Last edited 1/21/13 at 6:12 by Oliver Ball
+"""
+
+def userExists(ID):
+    db = shelve.open('people.db', writeback = False)
+    ID = str(ID)
+    value = False
+    
+    if ID in db:
+        value = True
+    
+    return value
+
+
 
 if __name__ == "__main__":
     x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
