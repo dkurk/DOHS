@@ -60,12 +60,6 @@ def logout():
     session.pop('ID',None)
     return redirect("/")
 
-#perhaps not necessary
-@app.route("/<page>")
-def page(page="index"):
-    page="%s.html"%(page)
-    return render_template(page)
-
 @app.route("/getPeople")
 def getPeople():
     result = db.getPeople()
@@ -83,9 +77,10 @@ def saveData():
     myFirst = request.args.get('first', '')
     myLast = request.args.get('last', '')
     myGrade = request.args.get('grade', '')
-    myRooms = request.args.get('rooms', '')
-    print myID, myFirst, myLast, myGrade, myRooms
-    #if you try printing person here, its empty
+    myRooms = []
+    for i in range(1,11):
+        myRooms.append(request.args.get('room' + str(i), ''))
+    
     boolean = db.create_user(myID, myFirst, myLast, myGrade, myRooms)
     if boolean == 1:
         return json.dumps(True)
