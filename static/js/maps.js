@@ -21,7 +21,7 @@ var loadMaps = function() {
 	    
 	    //added temporary if statement b/c the database has empty lists for rooms --Helen
 	    if (people[i][4] && people[i][4][0]){
-		switch (people[i][4][0] % 100) {
+		switch (Math.floor(people[i][4][0] / 100)) {
 		case 1:
 		    $("#svg-one").append(newCircle);
 		    break;
