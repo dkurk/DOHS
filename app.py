@@ -31,7 +31,7 @@ def login():
             #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
             #also check if field is not empty
             session['ID'] = ID
-            if session['redirectpage']:
+            if 'redirectpage' in session:
                 return redirect(session['redirectpage'])
             else:
                 return redirect(url_for('maps'))
@@ -45,7 +45,7 @@ def account():
 
 
 @app.route("/maps",methods=['GET','POST'])
-#@requireauth("maps")
+@requireauth("maps")
 def maps():
     if request.method=='GET':
         return render_template("maps.html")
@@ -55,7 +55,7 @@ def maps():
             return redirect(url_for('logout'))
 
 @app.route("/logout")
-#@requireauth("/maps")
+@requireauth("/maps")
 def logout():
     session.pop('ID',None)
     return redirect("/")
@@ -95,10 +95,10 @@ def getPeopleByGrade():
 
 if __name__ == "__main__":
     app.debug=True
-    #app.run()
+    app.run()
     
     #print saveData()
     #print
-    print getPeople()
+    #print getPeople()
     #print
     #print getProfile()
