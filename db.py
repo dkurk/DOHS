@@ -215,6 +215,7 @@ def toString(ID):
     
     return string
 
+
 """
 Function: start_fresh()
 Purpose: Creates a brand new shelf, deleting all remnants of any pre-existing one.
@@ -231,6 +232,14 @@ def start_fresh():
 
     return str(db)
 
+
+"""
+Function: dump()
+Purpose: Just prints out a dump of the database. Simple stuff.
+Return: No return.
+
+Last edited 1/20/13 at 8:40 by Oliver Ball
+"""
 
 def dump():
     db = shelve.open('people.db')
