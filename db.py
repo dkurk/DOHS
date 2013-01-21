@@ -4,18 +4,28 @@ gradelist = {'Freshman' : 9,
             'Sophomore' : 10,
             'Junior' : 11,
             'Senior' : 12,
+
+             '9' : 'Freshman',
+            '10' : 'Sophomore',
+            '11' : 'Junior',
+            '12' : 'Senior',
+
+             '0' : 'Teacher',
             }
 
+empty_shedule = [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
+
 """
-Function:  add_teacher(string teacher) 
-Purpose: Add a slot in the database for a teacher. Works reg
+Function:  add_teacher(int ID, string first, string last, int[] schedule) 
+Purpose: Add a slot in the database for a teacher if she doesn't already exist.
 Return: 1 if the teacher was added, 0 if the teacher was already in the db.
 
-Last edited: 1/8/13 at 12:24 by Oliver Ball
+Last edited: 1/20/13 at 6:42 by Oliver Ball
+Tested: Yes
 """
 
 def add_teacher(ID, first, last, schedule ):
-    db = shelve.open('teachers.db')
+    db = shelve.open('people.db', writeback = True)
     value = 0
     ID = str(ID)
 
@@ -29,6 +39,7 @@ def add_teacher(ID, first, last, schedule ):
         teacher.append(schedule)#student[4] is the schedule
 
         db[ID] = teacher
+
         value = 1;
         
         
@@ -37,35 +48,44 @@ def add_teacher(ID, first, last, schedule ):
 
 
 """
-Function:  edit_room(string teacher, int period, int room) 
+Function:  edit_room(string ID, int period, int room) 
 Purpose: Add/change what room a teacher is in during a certain period.
 Return: 1
 
-Last edited: 1/9/13 at 12:02 by Oliver Ball
+Last edited: 1/20/13 at 8:43 by Oliver Ball
 """
 
 def edit_room(ID, period, room):
     ID = str(ID)
-    db = shelve.open('teachers.db')
-    db[ID][period] = room
+    period = int(period - 1)
+    room = int(room)
+
+    db = shelve.open('people.db', writeback = True)
+    schedule = db[ID][4]
+    #print 'Previous room: ' + str(db[ID][4])
+    #print 'Old schedule: ' + str(schedule)
+    schedule[period] = room
+    #print 'New schedule: ' + str(schedule)
+    db[ID][4] = schedule
+    #print 'New room: ' + str(db[ID][4])
     db.close()
     return 1
 
 
 """
-Function:  get_teacher_schedule(string teacher)
-Purpose: Return the schedule array for the given teacher.
-Return: Returns the schedule array if the teacher is in the db, otherwise returns 0.   
+Function:  get_schedule(string ID)
+Purpose: Return the schedule array for the given ID.
+Return: Returns the schedule array if the person is in the db, otherwise returns 0.   
 
-Last edited: 1/8/13 at 12:24 by Oliver Ball
+Last edited: 1/20/13 at 6:43 by Oliver Ball
 """
 
-def get_teacher_schedule(ID):
+def get_schedule(ID):
     ID = str(ID)
-    db = shelve.open('teachers.db')
+    db = shelve.open('people.db')
     value = 0;
     if ID in db:
-        value = db['teacher']
+        value = db[ID][4]
     db.close()
     return value
 
@@ -91,7 +111,7 @@ Last edited: 1/14/13 at 12:26 by Oliver Ball
 """
 def create_user(ID, first, last, grade, schedule):
     value = 0
-    db = shelve.open('students.db')
+    db = shelve.open('people.db', writeback = True)
     ID = str(ID)
     if (not ID in db):
         user = []
@@ -115,26 +135,21 @@ Input: An int ID corresponding to the person you want to get
 Purpose: Get the account array of a person of id = ID
 Return: The account array if the Profile exists, 0 if unsuccesful
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:48 by Oliver Ball
 """
-
 
 def getProfile(ID):
     ID = str(ID)
 
-    students = shelve.open('students.db')
-    teachers = shelve.open('teachers.db')
+    db = shelve.open('people.db', writeback = False)
     value = 0
     
-    if ID in students:
-        value = students[ID]
-        
-    elif ID in teachers:
-        value = teachers[ID]
+    if ID in db:
+        value = db[ID]
     
-    students.close()
-    teachers.close()
+    db.close()
     return value
+
 
 """
 Function:  getPeople()
@@ -142,62 +157,157 @@ Input: None
 Purpose: Return a complete dictionary of all teachers and students. This relies on students and teachers not having any overlapping ID's, but that shouldn't be an issue.
 Return: A dictionary with dict[ID] corresponding to each teacher and student
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:50 by Oliver Ball
 """
 
 def getPeople():
-    students = shelve.open('students.db')
-    teachers = shelve.open('teachers.db')
+    db = shelve.open('people.db', writeback=False)
     
-    a = list(students.items())
-    b = list(teachers.items())
+    a = list(db.items())
 
-    dictionary = dict(a + b)
-
-    return dictionary
+    return dict(a)
     
 
 """
-Function:  get_students_by_grade(grade)
-Purpose: Get every student in a given grade. Right now the grade should be a string, but this can be changed to an array if needs be.
+Function:  get_students_by_grade(int/string grade)
+Purpose: Get every student in a given grade. Right now the grade should be an int, but this can be changed to an array if needs be.
 Return: An array containing every student matching the criteria.
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:51 by Oliver Ball
 """
 
 def get_students_by_grade(grade):
-    db = shelve.open("students.db")
+    db = shelve.open("people.db", writeback=False)
     students = []
+    grade = int(grade)
     for user in db:
-        if db[user][2] == grade:
+        #print 'grade is: ' + str(db[user][3])
+        if db[user][3] == grade:
             students.append(db[user])
 
     return students
 
+
+"""
+Function:  translate_master()
+Purpose: Translate the master file and insert the profiles into the db.
+Return: No return value
+
+Last edited: 1/20/13 at 6:51 by Oliver Ball
+"""
+
 def translate_master():
+    #db = shelve.open('people.db', writeback = True) #Uncomment this when code is properly tested
+    db = shelve.open('test.db', writeback = True) #Comment this out when cod is properly tested
+    log = shelve.open('name_log.db', writeback = True)
     file = open("master")
-    
-    
     line = file.readline()
+    while(line):
+        elements = line.split('\t')
+        tmp =[]
+        
+        for element in elements:
+            tmp.append( element.lstrip() )
+            
+        elements = tmp
+
+        print 'Elements: ' + str(elements)
+        
+        course_code = elements[0]
+        #class_size_ maybe = elements[1]
+        period = elements[2]
+        last_name = elements[4]
+        
+        new_id = db['New ID']
+
+        if not(last_name in log):
+            add_teacher(new_id, 'First', last_name, empty_schedule)
+            new_id = new_id + 1
+            db['New ID'] = new_id
+            
+
+        holder = ''
+        for entry in db:
+            if db[entry][2] == last_name:
+                holder = entry
+                break
+        
+        
+
+        line = file.readline()
     
+
+
+"""
+Function:  toString()
+Purpose: Create an easy to read string for a given ID and its corresponding profile.
+Return: A formatted string.
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
+
+def toString(ID):
+    ID = str(ID)
+    profile = getProfile(ID)
+    schedule = profile[4]
+    
+    string = ''
+    string += 'ID: ' + str(profile[0]) + '\n'
+    string += 'Name: ' + profile[1] +' '+ profile[2] + '\n'
+    string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
+    string += 'Schedule: \n'
+
+    i = 0
+    for period in schedule:
+        string += '\tPeriod ' +str(i)+ ': Room ' + str(period) + '\n'
+        i = i+1
+    
+    return string
+
+
+"""
+Function: start_fresh()
+Purpose: Creates a brand new shelf, deleting all remnants of any pre-existing one.
+Return: A printable string of the db, which should be empty other than 'New ID' : 1
+
+Last edited 1/20/13 at 8:37 by Oliver Ball
+"""
+
+def start_fresh():
+    db = shelve.open('people.db')
+    for entry in db:
+        del db[entry]
+    db['New ID'] = 1 
+
+    return str(db)
+
+
+"""
+Function: dump()
+Purpose: Just prints out a dump of the database. Simple stuff.
+Return: No return.
+
+Last edited 1/20/13 at 8:40 by Oliver Ball
+"""
+
+def dump():
+    db = shelve.open('people.db')
+    print db
+    db.close()
+
+
 
 if __name__ == "__main__":
     x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
     print x
-    
-    x = floor(403)
-    print "What floor is 403 on? : " + str(x)
-    x = floor(1023)
-    print "What floor is 403 on? : " + str(x)
 
+    print '\nTesting toString:\n'
+    print toString(8454) + '\n'
 
 
 #to do:
-#return dictionary which is a copy of db
-
-
 
 #3. saveData(person): saves the person in parameter into database. returns true if person is saved successfully, false if person already exists in database
 
 #translation of master file
-#toString file
