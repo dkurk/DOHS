@@ -4,6 +4,13 @@ gradelist = {'Freshman' : 9,
             'Sophomore' : 10,
             'Junior' : 11,
             'Senior' : 12,
+
+             '9' : 'Freshman',
+            '10' : 'Sophomore',
+            '11' : 'Junior',
+            '12' : 'Senior',
+
+             '0' : 'Teacher',
             }
 
 """
@@ -11,11 +18,12 @@ Function:  add_teacher(string teacher)
 Purpose: Add a slot in the database for a teacher. Works reg
 Return: 1 if the teacher was added, 0 if the teacher was already in the db.
 
-Last edited: 1/8/13 at 12:24 by Oliver Ball
+Last edited: 1/20/13 at 6:42 by Oliver Ball
+Tested: Yes
 """
 
 def add_teacher(ID, first, last, schedule ):
-    db = shelve.open('teachers.db')
+    db = shelve.open('people.db')
     value = 0
     ID = str(ID)
 
@@ -37,35 +45,35 @@ def add_teacher(ID, first, last, schedule ):
 
 
 """
-Function:  edit_room(string teacher, int period, int room) 
+Function:  edit_room(string ID, int period, int room) 
 Purpose: Add/change what room a teacher is in during a certain period.
 Return: 1
 
-Last edited: 1/9/13 at 12:02 by Oliver Ball
+Last edited: 1/20/13 at 6:27 by Oliver Ball
 """
 
 def edit_room(ID, period, room):
     ID = str(ID)
-    db = shelve.open('teachers.db')
-    db[ID][period] = room
+    db = shelve.open('people.db')
+    db[ID][4][period] = room
     db.close()
     return 1
 
 
 """
-Function:  get_teacher_schedule(string teacher)
-Purpose: Return the schedule array for the given teacher.
-Return: Returns the schedule array if the teacher is in the db, otherwise returns 0.   
+Function:  get_schedule(string ID)
+Purpose: Return the schedule array for the given ID.
+Return: Returns the schedule array if the person is in the db, otherwise returns 0.   
 
-Last edited: 1/8/13 at 12:24 by Oliver Ball
+Last edited: 1/20/13 at 6:43 by Oliver Ball
 """
 
-def get_teacher_schedule(ID):
+def get_schedule(ID):
     ID = str(ID)
-    db = shelve.open('teachers.db')
+    db = shelve.open('people.db')
     value = 0;
     if ID in db:
-        value = db['teacher']
+        value = db[ID][4]
     db.close()
     return value
 
@@ -91,7 +99,7 @@ Last edited: 1/14/13 at 12:26 by Oliver Ball
 """
 def create_user(ID, first, last, grade, schedule):
     value = 0
-    db = shelve.open('students.db')
+    db = shelve.open('people.db')
     ID = str(ID)
     if (not ID in db):
         user = []
@@ -115,26 +123,21 @@ Input: An int ID corresponding to the person you want to get
 Purpose: Get the account array of a person of id = ID
 Return: The account array if the Profile exists, 0 if unsuccesful
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:48 by Oliver Ball
 """
-
 
 def getProfile(ID):
     ID = str(ID)
 
-    students = shelve.open('students.db')
-    teachers = shelve.open('teachers.db')
+    db = shelve.open('people.db')
     value = 0
     
-    if ID in students:
-        value = students[ID]
-        
-    elif ID in teachers:
-        value = teachers[ID]
+    if ID in db:
+        value = db[ID]
     
-    students.close()
-    teachers.close()
+    db.close()
     return value
+
 
 """
 Function:  getPeople()
@@ -142,31 +145,27 @@ Input: None
 Purpose: Return a complete dictionary of all teachers and students. This relies on students and teachers not having any overlapping ID's, but that shouldn't be an issue.
 Return: A dictionary with dict[ID] corresponding to each teacher and student
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:50 by Oliver Ball
 """
 
 def getPeople():
-    students = shelve.open('students.db')
-    teachers = shelve.open('teachers.db')
+    db = shelve.open('people.db')
     
-    a = list(students.items())
-    b = list(teachers.items())
+    a = list(db.items())
 
-    dictionary = dict(a + b)
-
-    return dictionary
+    return dict(a)
     
 
 """
 Function:  get_students_by_grade(grade)
-Purpose: Get every student in a given grade. Right now the grade should be a string, but this can be changed to an array if needs be.
+Purpose: Get every student in a given grade. Right now the grade should be an int, but this can be changed to an array if needs be.
 Return: An array containing every student matching the criteria.
 
-Last edited: 1/14/13 at 12:26 by Oliver Ball
+Last edited: 1/20/13 at 6:51 by Oliver Ball
 """
 
 def get_students_by_grade(grade):
-    db = shelve.open("students.db")
+    db = shelve.open("people.db")
     students = []
     for user in db:
         if db[user][2] == grade:
@@ -174,22 +173,60 @@ def get_students_by_grade(grade):
 
     return students
 
+
+"""
+Function:  translate_master()
+Purpose: Translate the master file and insert the profiles into the db.
+Return: No return value
+
+Last edited: 1/20/13 at 6:51 by Oliver Ball
+"""
+
 def translate_master():
     file = open("master")
-    
-    
     line = file.readline()
     
+
+
+"""
+Function:  toString()
+Purpose: Create an easy to read string for a given ID and its corresponding profile.
+Return: A formatted string.
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
+
+def toString(ID):
+    ID = str(ID)
+    profile = getProfile(ID)
+    schedule = profile[4]
+    
+    string = ''
+    string += 'ID: ' + str(profile[0]) + '\n'
+    string += 'Name: ' + profile[1] +' '+ profile[2] + '\n'
+    string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
+    string += 'Schedule: \n'
+
+    i = 0
+    for period in schedule:
+        string += '\tPeriod ' +str(i)+ ': Room ' + str(period) + '\n'
+        i = i+1
+    
+    return string
+
+def dump():
+    db = shelve.open('people.db')
+    print db
+    db.close()
+
+
 
 if __name__ == "__main__":
     x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
     print x
-    
-    x = floor(403)
-    print "What floor is 403 on? : " + str(x)
-    x = floor(1023)
-    print "What floor is 403 on? : " + str(x)
 
+    print toString(8454)
 
 
 #to do:
