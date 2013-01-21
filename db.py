@@ -215,6 +215,23 @@ def toString(ID):
     
     return string
 
+"""
+Function: start_fresh()
+Purpose: Creates a brand new shelf, deleting all remnants of any pre-existing one.
+Return: A printable string of the db, which should be empty other than 'New ID' : 1
+
+Last edited 1/20/13 at 8:37 by Oliver Ball
+"""
+
+def start_fresh():
+    db = shelve.open('people.db')
+    for entry in db:
+        del db[entry]
+    db['New ID'] = 1 
+
+    return str(db)
+
+
 def dump():
     db = shelve.open('people.db')
     print db
@@ -226,7 +243,8 @@ if __name__ == "__main__":
     x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
     print x
 
-    print toString(8454)
+    print '\nTesting toString:\n'
+    print toString(8454) + '\n'
 
 
 #to do:
