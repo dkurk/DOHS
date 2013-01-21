@@ -121,7 +121,7 @@ Return: N/A
 Last edited: 1/21/13 at 12:24 by Helen Nie
 """
 
-@app.route("/getLocsByGrade")
+@app.route("/getPeopleByGrade")
 def getPeopleByGrade():
     grade = request.args.get('grade', '')
     result = db.get_students_by_grade(grade)
