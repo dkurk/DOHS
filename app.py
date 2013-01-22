@@ -44,12 +44,14 @@ def login():
         button = request.form['button']
         if button == 'Login':
             #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
-            #also check if field is not empty
-            session['ID'] = ID
-            if 'redirectpage' in session:
-                return redirect(session['redirectpage'])
+            if db.userExists(ID):
+                session['ID'] = ID
+                if 'redirectpage' in session:
+                    return redirect(session['redirectpage'])
+                else:
+                    return redirect(url_for('maps'))
             else:
-                return redirect(url_for('maps'))
+                return redirect(url_for('login'))
         elif button == 'Register':
             return redirect(url_for('account'))
 
@@ -80,7 +82,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @requireauth("maps")
 def maps():
     if request.method=='GET':
-        return render_template("maps.html")
+        return render_template("maps.html", id=session['ID'])
     else:
         button = request.form['button']
         if button == "Logout":
