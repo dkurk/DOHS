@@ -70,6 +70,19 @@ def account():
         return render_template("account.html")
 
 
+"""
+Function: update()
+Purpose: page for user to edit profile
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/update",methods=['GET','POST'])
+def update():
+    if request.method=='GET':
+        return render_template("update.html", id=session['ID'])
+
+
 
 """
 Function: maps()
