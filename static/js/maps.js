@@ -19,9 +19,9 @@ var loadMaps = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(Math.random()*500));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(Math.random()*50));
-	    newCircle.setAttributeNS(null, 'r', 10);
+	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'r', 2);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
 	    switch (people[i][3]) {
@@ -49,7 +49,7 @@ var loadMaps = function() {
 		break;
 	    }
 
-	    switch (Math.floor(people[i][4][currPd] / 100)) {
+	    switch (Math.floor(people[i][4][currPd-1] / 100)) {
 	    case 1:
 		$("#svg-one").append(newCircle);
 		break;
@@ -116,9 +116,9 @@ var loadMapsByGrade = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(Math.random()*500));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(Math.random()*50));
-	    newCircle.setAttributeNS(null, 'r', 10);
+	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'r', 2);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
 	    switch (people[i][3]) {
@@ -146,7 +146,7 @@ var loadMapsByGrade = function() {
 		break;
 	    }
 
-	    switch (Math.floor(people[i][4][currPd] / 100)) {
+	    switch (Math.floor(people[i][4][currPd-1] / 100)) {
 	    case 1:
 		$("#svg-one").append(newCircle);
 		break;
@@ -185,10 +185,10 @@ var loadMapsByGrade = function() {
 
 var setPeriod = function() {
     //gets current time in a string
-    var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
+    //var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
 
     //uncomment the next line to test during outside school hours
-    //var currTime = "01/01/2011 09:09:09";
+    var currTime = "01/01/2011 09:09:09";
 
     console.log(currTime);
 
@@ -214,10 +214,74 @@ var setPeriod = function() {
     }
 }
 
+
+//varName = "";
+
 var zoom = function() {
     //TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
+    var circles = $("circle", $(this));
+    var ids = [];
+    $(circles).each(function() {
+	ids.push($(this).attr("id"));
+    });
+   
+    //console.log(ids);
+
+    var idString = ids.join(",");
+
+    console.log(idString);
+
+    /*
+    for (var i=0; i<ids.length; i++) {
+	var varName = "id" + i;
+	window[varName] = ids[i];
+
+    }*/
+   
+    var svgID = ($(this).attr("id"));
+    var myFloor = svgID.substring(4);
+
+    //console.log(myFloor);
+
+    switch(myFloor) {
+    case "ten":
+	myFloor = 10;
+	break;
+    case "nine":
+	myFloor = 9;
+	break;
+    case "eight":
+	myFloor = 8;
+	break;
+    case "seven":
+	myFloor = 7;
+	break;
+    case "six":
+	myFloor = 6;
+	break;
+    case "five":
+	myFloor = 5;
+	break;
+    case "four":
+	myFloor = 4;
+	break;
+    case "three":
+	myFloor = 3;
+	break;
+    case "two":
+	myFloor = 2;
+	break;
+    case "one":
+	myFloor = 1;
+	break;
+    }
+
+    //console.log(myFloor);
+
+    $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString});
+
     var content = '<Iframe Id="FrameTiny" Src="' + 'account' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
-    TINY.box.show({html: content, width:1000, height:400});
+    TINY.box.show({html: content, width:400, height:400});
 }
  
 $(document).ready(function() {
@@ -227,4 +291,13 @@ $(document).ready(function() {
 
     $(".choose-grade").change(loadMapsByGrade);
     $("#svg-ten").click(zoom);
+    $("#svg-nine").click(zoom);
+    $("#svg-eight").click(zoom);
+    $("#svg-seven").click(zoom);
+    $("#svg-six").click(zoom);
+    $("#svg-five").click(zoom);
+    $("#svg-four").click(zoom);
+    $("#svg-three").click(zoom);
+    $("#svg-two").click(zoom);
+    $("#svg-one").click(zoom);
 });
