@@ -1,15 +1,15 @@
 var makeMap = function() {
     
     //gets the svg document
-    map = $("#map");
+    map = $("#zoom-map");
     
     //gets the floor number
     floor = parseFloat($("#floor").attr("value"));
     console.log(floor);
 
     //gets svg document info
-    var width = $("#map").attr("width");
-    var height = $("#map").attr("height");
+    var width = parseFloat(map.attr("width"));
+    var height = parseFloat(map.attr("height"));
     
     //sets rows and columns
     var cols = 20;
@@ -57,37 +57,47 @@ var makeMap = function() {
     }
 }
 
-var makeDefault = function(map, floor, width, height, cols, rows){
-    var x = 0
+var makeDefault = function(map, w, h){
+    var x = 0;
     var y = 0;
+    
+    map.empty();
+
+    for (var i = 1; i < 41; i = i + 2) {
+        var svgns = "http://www.w3.org/2000/svg";
+	
+        var newRoom = document.createElementNS(svgns, "rect");
+        newRoom.setAttributeNS(null, 'class', 'room');
+        newRoom.setAttributeNS(null, 'id', 300 + i);
+        newRoom.setAttributeNS(null, 'x', x);
+        newRoom.setAttributeNS(null, 'y', y);
+        newRoom.setAttributeNS(null, 'width', w);
+	newRoom.setAttributeNS(null, 'height', h);
+        newRoom.setAttributeNS(null, 'stroke', 'black');
+        newRoom.setAttributeNS(null, 'fill', 'white');	
+	
+	map.append(newRoom);
+	
+	x = x + w;
+    }
+
+    x = 0;
+    y = 2 * h;
 
     for (var i = 0; i < 41; i = i + 2) {
         var newRoom = document.createElementNS(svgns, "rect");
-        newCircle.setAttributeNS(null, 'class', 'room');
-        newCircle.setAttributeNS(null, 'id', 300 + i);
-        newCircle.setAttributeNS(null, 'rx', x);
-        newCircle.setAttributeNS(null, 'ry', y);
-        newCircle.setAttributeNS(null, 'r', 10);
-        newCircle.setAttributeNS(null, 'stroke', 'black');
-        var color;
-        switch (people[i][3]) {
-        case "0":
-            color = "red";
-            break;
-        case "9":
-            color = "green";
-            break;
-        case "10":
-            color = "brown";
-            break;
-        case "11":
-            color = "magenta";
-            break;
-        case "12":
-            color = "yellow";
-            break;
-        }    
-	x = x * 
+        newRoom.setAttributeNS(null, 'class', 'room');
+        newRoom.setAttributeNS(null, 'id', 300 + i);
+        newRoom.setAttributeNS(null, 'x', x);
+        newRoom.setAttributeNS(null, 'y', y);
+        newRoom.setAttributeNS(null, 'width', w);
+	newRoom.setAttributeNS(null, 'height', h);
+        newRoom.setAttributeNS(null, 'stroke', 'black');
+        newRoom.setAttributeNS(null, 'fill', 'white');	
+
+	map.append(newRoom);
+
+	x = x + w;
     }
 }
     

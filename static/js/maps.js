@@ -281,7 +281,7 @@ var zoom = function() {
     $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString});
 
     var content = '<Iframe Id="FrameTiny" Src="' + 'account' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
-    TINY.box.show({html: content, width:400, height:400});
+    TINY.box.show({html: content, width:1200, height:400});
 }
  
 $(document).ready(function() {
