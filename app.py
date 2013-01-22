@@ -278,12 +278,9 @@ def getTinyBoxData():
     global floor, period, IDs
     floor = request.args.get('floor', '')
     period = request.args.get('period', '')
-            
-    for i in range (0, 4000):
-        try:
-            IDs.append(request.args.get('id' + str(i), ''))
-        except:
-            break
+    idString = request.args.get('idString', '')
+
+    IDs = idString.split(",")
                        
 
 """
