@@ -16,7 +16,7 @@ gradelist = {'Freshman' : 9,
 
 translations = {'615A' : '615',
                 '' : '-15',
-                '2, 3' : '2'
+                #'CAFE' : '500'
                 }
 
 """
@@ -252,7 +252,7 @@ Last edited: 1/20/13 at 6:51 by Oliver Ball
 """
 
 def translate_master():
-    #db = shelve.open('people.db', writeback = True) #Uncomment this when code is properly tested
+    
     #empty_shedule = [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
     print '\ncheck 1'
     file = open("master")
@@ -272,19 +272,35 @@ def translate_master():
         
         if (len(elements) > 4 and 
             elements[0] != 'code' and
-            int(elements[3]) <= 10) and :
+            elements[3] != '1, 2' and
+            elements[3] != '2, 3' and
+            elements[3] != '3, 4' and
+            elements[3] != '4, 5' and
+            elements[3] != '5, 6' and
+            elements[3] != '6, 7' and
+            elements[3] != '7, 8' and
+            elements[3] != '8, 9' and
+            elements[3] != '9, 10' and
+            elements[2] != 'TEXTBK DELINQ' and
+            elements[2] != 'DNSTXBK DELQ' and
+            elements[5] != 'CAFE' and
+            elements[5] != 'TEAM' and
+            elements[5] != 'TBA' and
+            elements[4] != 'MD LUNCH' and
+            elements[4] != 'FOURTPDLCH' and
+            elements[4] != 'NO CLASS' and        
+            int(elements[3]) <= 10):
 
             course_code = elements[0]
             period = elements[3]
-            last_name = elements[4]
+            last_name = elements[4].lower().title()
             room = elements[5]
             if room in translations:
                 room = translations[room]
-            
-            
+                
             print '\ncheck 3'
             
-            db = shelve.open('people.db', writeback = True) #Comment this out when cod is properly tested
+            db = shelve.open('people.db', writeback = True) 
             print '\ncheck 4'
             dump()
             print db['New ID']
@@ -296,10 +312,10 @@ def translate_master():
             log = shelve.open('name_log.db', writeback = True)
             if not(last_name in log):
                 log.close()
-                add_teacher(new_id, 'First', last_name, [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10])
+                add_teacher(new_id, 'Mr./Ms.', last_name, [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10])
                 new_id = new_id + 1
                 
-                db = shelve.open('people.db', writeback = True) #Comment this out when cod is properly tested
+                db = shelve.open('people.db', writeback = True) 
                 db['New ID'] = new_id
                 db.close()
 
@@ -328,6 +344,10 @@ Last edited: 1/20/13 at 7:28 by Oliver Ball
 def toString(ID):
     ID = str(ID)
     profile = getProfile(ID)
+    
+    if isinstance(profile, int):
+        return 'New ID'
+    
     schedule = profile[4]
     
     string = ''
@@ -379,6 +399,12 @@ def dump():
     print db
     db.close()
 
+def nice_dump():
+    db = shelve.open('people.db')
+    for ID in db:
+        print toString(ID)
+    db.close()
+
 def dumplog():
     print 'Dumping Log:'
     log = shelve.open('name_log.db')
@@ -414,7 +440,7 @@ if __name__ == "__main__":
 
     print start_fresh()
     translate_master()
-    dump()
+    #nice_dump()
 
 #to do:
 
