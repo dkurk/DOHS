@@ -179,7 +179,7 @@ Last edited: 1/20/13 at 6:51 by Oliver Ball
 def get_students_by_grade(grade):
     db = shelve.open("people.db", writeback=False)
     students = []
-    grade = int(grade)
+    grade = str(grade)
     for user in db:
         #print 'grade is: ' + str(db[user][3])
         if db[user][3] == grade:
