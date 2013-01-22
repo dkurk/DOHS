@@ -461,7 +461,7 @@ if __name__ == "__main__":
 
     print start_fresh()
     translate_master()
-    #nice_dump()
+    nice_dump()
 
 #to do:
 
