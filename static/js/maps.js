@@ -24,6 +24,7 @@ var loadMaps = function() {
 	    newCircle.setAttributeNS(null, 'r', 10);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    newCircle.setAttributeNS(null, 'fill', 'green');
+	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
 	    
 	    //checks if currently outside school hours
 	    if (currPd == -1){
@@ -71,11 +72,13 @@ var loadMaps = function() {
 **@params: none
 **This function, assigned on click to each bubble representing a student or teacher on the 10 svg maps takes the ID number/keyword of the clicked user and calls the "getProfile" server-side method to return the object the bubble represents. The profile information of this user/teacher will then be printed on a div at the bottom of the page. 
 */
-var getProfile = function() {
-
-    var myID = $(this).attr("id");
+var getProfile = function(evt) {
+    var circle = evt.target;
+    var myID = circle.getAttribute("id");
     $.getJSON("/getProfile", {id:myID}, function(person) {
-	$("#profile").text(JSON.stringify(person));
+	$("#profile").text(person);
+  
+	//JSON.stringify(person)	
     });
 
 }
@@ -174,7 +177,9 @@ var setPeriod = function() {
 }
 
 var zoom = function() {
-    TINY.box.show({html: "<img src='static/jpg/close2.png' Onclick='TINY.box.hide()'>Close</img><style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
+    TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
+
+    //<img src='static/jpg/close2.png' Onclick='TINY.box.hide()'>Close</img>
 }
  
 $(document).ready(function() {
@@ -182,7 +187,6 @@ $(document).ready(function() {
     console.log(currPd);
     
     loadMaps();
-    $(".person").click(getProfile);
     $(".choose-grade").change(loadMapsByGrade);
     $("#svg-ten").click(zoom);
 });
