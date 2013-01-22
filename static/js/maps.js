@@ -23,7 +23,25 @@ var loadMaps = function() {
 	    newCircle.setAttributeNS(null, 'cy', Math.floor(Math.random()*50));
 	    newCircle.setAttributeNS(null, 'r', 10);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
-	    newCircle.setAttributeNS(null, 'fill', 'green');
+	    var color;
+	    switch (people[i][3]) {
+	    case "0":
+		color = "red";
+		break;
+	    case "9":
+		color = "green";
+		break;
+	    case "10":
+		color = "brown";
+		break;
+	    case "11":
+		color = "magenta";
+		break;
+	    case "12":
+		color = "yellow";
+		break;
+	    }
+	    newCircle.setAttributeNS(null, 'fill', color);
 	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
 	    
 	    //checks if currently outside school hours
@@ -101,7 +119,26 @@ var loadMapsByGrade = function() {
 	    newCircle.setAttributeNS(null, 'cy', Math.floor(Math.random()*50));
 	    newCircle.setAttributeNS(null, 'r', 10);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
-	    newCircle.setAttributeNS(null, 'fill', 'green');
+	    var color;
+	    switch (people[i][3]) {
+	    case "0":
+		color = "red";
+		break;
+	    case "9":
+		color = "green";
+		break;
+	    case "10":
+		color = "brown";
+		break;
+	    case "11":
+		color = "magenta";
+		break;
+	    case "12":
+		color = "yellow";
+		break;
+	    }
+	    newCircle.setAttributeNS(null, 'fill', color);
+	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
 	    
 	    //checks if currently outside school hours
 	    if (currPd == -1){
