@@ -214,6 +214,7 @@ def editData():
     for i in range(1,11):
         myRooms.append(request.args.get('room' + str(i), ''))
     
+    #boolean = db.editProfile("8751", "Helen", "Nie", "12", ["100","200","300","400","500","600","700","800","900","1000"])
     boolean = db.editProfile(myID, myFirst, myLast, myGrade, myRooms)
     if boolean == 1:
         return json.dumps(True)
@@ -228,9 +229,10 @@ Purpose: deletes the user with the specified ID from the database.
 Return: boolean upon success/failure
 Last edited: 1/21/13 at 12:24 by Helen Nie
 """
+@app.route("/deleteUser")
 def deleteUser():
     myID = request.args.get('id', '')
-    boolean = db.deleteUser(ID)
+    boolean = db.deleteUser(myID)
     return json.dumps(boolean)
 
 
@@ -245,6 +247,10 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print editData()
+    #print
+    #print deleteUser()
+    #print
     #print getProfile()
     #print
     #print saveData()

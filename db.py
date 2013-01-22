@@ -1,5 +1,6 @@
 import shelve
 
+
 gradelist = {'Freshman' : 9,
             'Sophomore' : 10,
             'Junior' : 11,
@@ -13,37 +14,50 @@ gradelist = {'Freshman' : 9,
              '0' : 'Teacher',
             }
 
-empty_shedule = [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
+translations = {'615A' : '615',
+                '' : '-15',
+                #'CAFE' : '500'
+                }
 
 """
 Function:  add_teacher(int ID, string first, string last, int[] schedule) 
 Purpose: Add a slot in the database for a teacher if she doesn't already exist.
-Return: 1 if the teacher was added, 0 if the teacher was already in the db.
+Return: True if the teacher was added, False if the teacher was already in the db.
 
-Last edited: 1/20/13 at 6:42 by Oliver Ball
+Last edited: 1/21/13 at 6:31 by Oliver Ball
 Tested: Yes
 """
 
-def add_teacher(ID, first, last, schedule ):
+def add_teacher(ID, first, last, schedule):
+    print '\nBEGINNING ADD_TEACHER'
     db = shelve.open('people.db', writeback = True)
-    value = 0
+    log = shelve.open('name_log.db', writeback = True)
+
+    value = False
     ID = str(ID)
-
-    if (not ID in db):
+    print '\nMarker 1'
+    print str(ID)
+    if (not(ID in db)):
+        print '\nMarker 2'
         teacher = []
-
+        
         teacher.append(ID)#teacher[0] is the ID
         teacher.append(first)#teacher[1] is the first name
         teacher.append(last)#teacher[2] is the last name
         teacher.append(0)#teacher[3] is the 'grade'
         teacher.append(schedule)#student[4] is the schedule
-
+        print '\nMarker 3'
         db[ID] = teacher
+        print '\n\n ABOUT TO PRINT'
+        log[last] = ID
+        print 'log[last] :' + str(log[last])
 
-        value = 1;
+        value = True;
         
         
+    print '\nMarker 4'
     db.close();
+    log.close();
     return value
 
 
@@ -57,7 +71,8 @@ Last edited: 1/20/13 at 8:43 by Oliver Ball
 
 def edit_room(ID, period, room):
     ID = str(ID)
-    period = int(period - 1)
+    print 'Period: ' + str(period)
+    period = int(period) - 1
     room = int(room)
 
     db = shelve.open('people.db', writeback = True)
@@ -70,6 +85,46 @@ def edit_room(ID, period, room):
     #print 'New room: ' + str(db[ID][4])
     db.close()
     return 1
+
+"""
+Function:  editProfile(string ID, int period, int room, string grade, int[] schedule) 
+Purpose: Completely rewrite the data for an existing profile.
+Return: True if the profile existed, False if otherwise
+
+Last edited: 1/21/13 at 11:12 by Oliver Ball
+"""
+
+def editProfile(ID, first, last, grade, schedule):
+    ID = str(ID)
+    db = shelve.open('people.db', writeback = True)
+    value = False
+    
+    if ID in db: 
+        db[ID][1] = first
+        db[ID][2] = last
+        db[ID][3] = grade
+        db[ID][4] = schedule
+        value = True
+    
+    return value
+
+
+"""
+Function:  deleteUser(string ID) 
+Purpose: Delete the profile with id ID.
+Return: True if the profile existed and is now deleted, False if otherwise
+
+Last edited: 1/21/13 at 11:25 by Oliver Ball
+"""
+
+def deleteUser(ID):
+    ID = str(ID)
+    db = shelve.open('people.db', writeback = True)
+    value = False
+    
+    if ID in db: 
+        del db[ID]
+        value = True
 
 
 """
@@ -169,6 +224,27 @@ def getPeople():
     
 
 """
+Function:  getTeacherLoc(String last, int period)
+Input: A string last name and an int period.
+Purpose: Get the room that people with last name last are in during the given period. 
+Return: A list of users matching the description given. Formatted [[first, last, room], [first,last,room]]
+
+Last edited: 1/22/13 at 3:20 by Oliver Ball
+"""
+
+def getTeacherLoc(last, period):
+    db = shelve.open('people.db', writeback = False)
+    value = []
+    period = int(period)
+    for ID in db:
+        if db[ID][2] == last:
+            user = [db[1], db[2], db[4][period-1]]
+            value.append(user)
+
+    return value
+
+
+"""
 Function:  get_students_by_grade(int/string grade)
 Purpose: Get every student in a given grade. Right now the grade should be an int, but this can be changed to an array if needs be.
 Return: An array containing every student matching the criteria.
@@ -197,11 +273,12 @@ Last edited: 1/20/13 at 6:51 by Oliver Ball
 """
 
 def translate_master():
-    #db = shelve.open('people.db', writeback = True) #Uncomment this when code is properly tested
-    db = shelve.open('test.db', writeback = True) #Comment this out when cod is properly tested
-    log = shelve.open('name_log.db', writeback = True)
+    
+    #empty_shedule = [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10]
+    print '\ncheck 1'
     file = open("master")
     line = file.readline()
+    print '\ncheck 2'
     while(line):
         elements = line.split('\t')
         tmp =[]
@@ -213,29 +290,67 @@ def translate_master():
 
         print 'Elements: ' + str(elements)
         
-        course_code = elements[0]
-        #class_size_ maybe = elements[1]
-        period = elements[2]
-        last_name = elements[4]
         
-        new_id = db['New ID']
+        if (len(elements) > 4 and 
+            elements[0] != 'code' and
+            elements[3] != '1, 2' and
+            elements[3] != '2, 3' and
+            elements[3] != '3, 4' and
+            elements[3] != '4, 5' and
+            elements[3] != '5, 6' and
+            elements[3] != '6, 7' and
+            elements[3] != '7, 8' and
+            elements[3] != '8, 9' and
+            elements[3] != '9, 10' and
+            elements[2] != 'TEXTBK DELINQ' and
+            elements[2] != 'DNSTXBK DELQ' and
+            elements[5] != 'CAFE' and
+            elements[5] != 'TEAM' and
+            elements[5] != 'TBA' and
+            elements[4] != 'MD LUNCH' and
+            elements[4] != 'FOURTPDLCH' and
+            elements[4] != 'NO CLASS' and        
+            int(elements[3]) <= 10):
 
-        if not(last_name in log):
-            add_teacher(new_id, 'First', last_name, empty_schedule)
-            new_id = new_id + 1
-            db['New ID'] = new_id
+            course_code = elements[0]
+            period = elements[3]
+            last_name = elements[4].lower().title()
+            room = elements[5]
+            if room in translations:
+                room = translations[room]
+                
+            print '\ncheck 3'
             
+            db = shelve.open('people.db', writeback = True) 
+            print '\ncheck 4'
+            dump()
+            print db['New ID']
+            new_id = db['New ID']
+            print '\ncheck 5'
+            db.close()
+            print '\ncheck 6'
+            
+            log = shelve.open('name_log.db', writeback = True)
+            if not(last_name in log):
+                log.close()
+                add_teacher(new_id, 'Mr./Ms.', last_name, [-1,-2,-3,-4,-5,-6,-7,-8,-9,-10])
+                new_id = new_id + 1
+                
+                db = shelve.open('people.db', writeback = True) 
+                db['New ID'] = new_id
+                db.close()
 
-        holder = ''
-        for entry in db:
-            if db[entry][2] == last_name:
-                holder = entry
-                break
+            log = shelve.open('name_log.db', writeback = True)
+            print '\n'
+            dumplog()
+            ID = log[last_name]
+            log.close()
+            
+            edit_room(ID, period, room)
         
         
-
         line = file.readline()
-    
+        
 
 
 """
@@ -250,17 +365,21 @@ Last edited: 1/20/13 at 7:28 by Oliver Ball
 def toString(ID):
     ID = str(ID)
     profile = getProfile(ID)
+    
+    if isinstance(profile, int):
+        return 'New ID'
+    
     schedule = profile[4]
     
     string = ''
-    string += 'ID: ' + str(profile[0]) + '\n'
-    string += 'Name: ' + profile[1] +' '+ profile[2] + '\n'
-    string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
-    string += 'Schedule: \n'
+    string += '<p><b>ID:</b> ' + str(profile[0]) + '</p>'
+    string += '<p><b>Name:</b> ' + profile[1] +' '+ profile[2] + '</p>'
+    string += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
+    string += '<p><b>Schedule:</b></p>'
 
     i = 0
     for period in schedule:
-        string += '\tPeriod ' +str(i)+ ': Room ' + str(period) + '\n'
+        string += '<p><b>&nbsp&nbsp&nbsp&nbspPeriod</b>' +str(i + 1)+ ' : <b>Room</b> ' + str(period) + '</p>'
         i = i+1
     
     return string
@@ -271,7 +390,7 @@ Function: start_fresh()
 Purpose: Creates a brand new shelf, deleting all remnants of any pre-existing one.
 Return: A printable string of the db, which should be empty other than 'New ID' : 1
 
-Last edited 1/20/13 at 8:37 by Oliver Ball
+Last edited 1/21/13 at 7:08 by Oliver Ball
 """
 
 def start_fresh():
@@ -279,6 +398,11 @@ def start_fresh():
     for entry in db:
         del db[entry]
     db['New ID'] = 1 
+
+    log = shelve.open('name_log.db', writeback = True)
+    for entry in log:
+        del log[entry]
+    log.close()
 
     return str(db)
 
@@ -296,6 +420,17 @@ def dump():
     print db
     db.close()
 
+def nice_dump():
+    db = shelve.open('people.db')
+    for ID in db:
+        print toString(ID)
+    db.close()
+
+def dumplog():
+    print 'Dumping Log:'
+    log = shelve.open('name_log.db')
+    print log
+    log.close()
 
 """
 Function: userExists(int/string ID)
@@ -318,12 +453,15 @@ def userExists(ID):
 
 
 if __name__ == "__main__":
-    x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
-    print x
+    #x = add_teacher(8454, 'Oliver', 'Ball', [101,202,303,404,505,606,707,808,909,1011])
+    #print x
 
-    print '\nTesting toString:\n'
-    print toString(8454) + '\n'
+    #print '\nTesting toString:\n'
+    #print toString(8454) + '\n'
 
+    print start_fresh()
+    translate_master()
+    nice_dump()
 
 #to do:
 
