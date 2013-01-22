@@ -272,7 +272,7 @@ def translate_master():
         
         if (len(elements) > 4 and 
             elements[0] != 'code' and
-            int(elements[3]) <= 10) and :
+            int(elements[3]) <= 10):
 
             course_code = elements[0]
             period = elements[3]
@@ -331,14 +331,14 @@ def toString(ID):
     schedule = profile[4]
     
     string = ''
-    string += 'ID: ' + str(profile[0]) + '\n'
-    string += 'Name: ' + profile[1] +' '+ profile[2] + '\n'
-    string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
-    string += 'Schedule: \n'
+    string += '<p><b>ID:</b> ' + str(profile[0]) + '</p>'
+    string += '<p><b>Name:</b> ' + profile[1] +' '+ profile[2] + '</p>'
+    string += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
+    string += '<p><b>Schedule:</b></p>'
 
     i = 0
     for period in schedule:
-        string += '\tPeriod ' +str(i)+ ': Room ' + str(period) + '\n'
+        string += '<p>    <b>Period</b> ' +str(i + 1)+ ': <b>Room</b> ' + str(period) + '</p>'
         i = i+1
     
     return string
