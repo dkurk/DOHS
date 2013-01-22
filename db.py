@@ -14,6 +14,10 @@ gradelist = {'Freshman' : 9,
              '0' : 'Teacher',
             }
 
+translations = {'615A' : '615',
+                '' : '-15',
+                '2, 3' : '2'
+                }
 
 """
 Function:  add_teacher(int ID, string first, string last, int[] schedule) 
@@ -67,6 +71,7 @@ Last edited: 1/20/13 at 8:43 by Oliver Ball
 
 def edit_room(ID, period, room):
     ID = str(ID)
+    print 'Period: ' + str(period)
     period = int(period) - 1
     room = int(room)
 
@@ -80,6 +85,28 @@ def edit_room(ID, period, room):
     #print 'New room: ' + str(db[ID][4])
     db.close()
     return 1
+
+"""
+Function:  editProfile(string ID, int period, int room, string grade, int[] schedule) 
+Purpose: Completely rewrite the data for an existing profile.
+Return: True if the profile existed, False if otherwise
+
+Last edited: 1/21/13 at 11:12 by Oliver Ball
+"""
+
+def editProfile(ID, first, last, grade, schedule):
+    ID = str(ID)
+    db = shelve.open('people.db', writeback = True)
+    value = False
+    
+    if ID in db: 
+        db[ID][1] = first
+        db[ID][2] = last
+        db[ID][3] = grade
+        db[ID][4] = schedule
+        value = True
+    
+    return value
 
 
 """
@@ -189,7 +216,7 @@ Last edited: 1/20/13 at 6:51 by Oliver Ball
 def get_students_by_grade(grade):
     db = shelve.open("people.db", writeback=False)
     students = []
-    grade = int(grade)
+    grade = str(grade)
     for user in db:
         #print 'grade is: ' + str(db[user][3])
         if db[user][3] == grade:
@@ -224,11 +251,18 @@ def translate_master():
 
         print 'Elements: ' + str(elements)
         
-        if (len(elements) > 4 ):
+        
+        if (len(elements) > 4 and 
+            elements[0] != 'code' and
+            int(elements[3]) <= 10) and :
+
             course_code = elements[0]
             period = elements[3]
             last_name = elements[4]
             room = elements[5]
+            if room in translations:
+                room = translations[room]
+            
             
             print '\ncheck 3'
             
@@ -362,6 +396,7 @@ if __name__ == "__main__":
 
     print start_fresh()
     translate_master()
+    dump()
 
 #to do:
 
