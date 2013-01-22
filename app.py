@@ -9,6 +9,20 @@ app.secret_key="blah"
 
 
 """
+Function: sets global variables
+Purpose: for tiny box popup
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+global floor, period
+floor = period = 0
+global IDs 
+IDs = []
+
+
+
+"""
 Function: requireauth(page)
 Purpose: when wrapped around a page, requires that the user is logged in before viewing the page. Also redirects the user back to the page upon logging in.
 Return: N/A
@@ -100,6 +114,21 @@ def maps():
         button = request.form['button']
         if button == "Logout":
             return redirect(url_for('logout'))
+
+
+
+"""
+Function: tinyBoxPage()
+Purpose: page thats displays inside tiny box popouts
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/tinyBoxPage",methods=['GET','POST'])
+def tinyBoxPage():
+    if request.method=='GET':
+        return render_template("tinyBoxPage.html", floor=floor, period=period, IDs=IDs)
+
 
 
 """
@@ -237,6 +266,26 @@ def deleteUser():
 
 
 
+
+"""
+Function: getTinyBoxData()
+Purpose: gets the data needed to construct the tiny box from maps.js
+Return: sets global variables relevant to data
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getTinyBoxData")
+def getTinyBoxData():
+    global floor, period, IDs
+    floor = request.args.get('floor', '')
+    period = request.args.get('period', '')
+            
+    for i in range (0, 4000):
+        try:
+            IDs.append(request.args.get('id' + str(i), ''))
+        except:
+            break
+                       
+
 """
 Function: main
 Purpose: runs the app
@@ -247,6 +296,12 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print getTinyBoxData()
+    #print
+    #print floor
+    #print period
+    #print IDs
+
     #print editData()
     #print
     #print deleteUser()
