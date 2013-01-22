@@ -182,4 +182,7 @@ if __name__ == "__main__":
     #print
     #print getPeople()
     #print
+    #print getPeopleByGrade()
+    #print
     #print getProfile()
+    
