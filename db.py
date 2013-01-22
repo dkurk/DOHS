@@ -110,6 +110,24 @@ def editProfile(ID, first, last, grade, schedule):
 
 
 """
+Function:  deleteUser(string ID) 
+Purpose: Delete the profile with id ID.
+Return: True if the profile existed and is now deleted, False if otherwise
+
+Last edited: 1/21/13 at 11:25 by Oliver Ball
+"""
+
+def deleteUser(ID):
+    ID = str(ID)
+    db = shelve.open('people.db', writeback = True)
+    value = False
+    
+    if ID in db: 
+        del db[ID]
+        value = True
+
+
+"""
 Function:  get_schedule(string ID)
 Purpose: Return the schedule array for the given ID.
 Return: Returns the schedule array if the person is in the db, otherwise returns 0.   
