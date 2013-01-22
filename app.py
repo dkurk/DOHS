@@ -80,7 +80,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/update",methods=['GET','POST'])
 def update():
     if request.method=='GET':
-        return render_template("update.html", id=session['ID'])
+        return render_template("update.html", ID=session['ID'])
 
 
 
@@ -95,7 +95,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @requireauth("maps")
 def maps():
     if request.method=='GET':
-        return render_template("maps.html", id=session['ID'])
+        return render_template("maps.html", ID=session['ID'])
     else:
         button = request.form['button']
         if button == "Logout":
