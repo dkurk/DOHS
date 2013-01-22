@@ -215,16 +215,16 @@ var setPeriod = function() {
 }
 
 var zoom = function() {
-    TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
-
-    //<img src='static/jpg/close2.png' Onclick='TINY.box.hide()'>Close</img>
+    //TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
+    var content = '<Iframe Id="FrameTiny" Src="' + 'account' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
+    TINY.box.show({html: content, width:1000, height:400});
 }
  
 $(document).ready(function() {
     setPeriod();
     console.log(currPd);
-    
     loadMaps();
+
     $(".choose-grade").change(loadMapsByGrade);
     $("#svg-ten").click(zoom);
 });
