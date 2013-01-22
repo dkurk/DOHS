@@ -229,6 +229,7 @@ Purpose: deletes the user with the specified ID from the database.
 Return: boolean upon success/failure
 Last edited: 1/21/13 at 12:24 by Helen Nie
 """
+@app.route("/deleteUser")
 def deleteUser():
     myID = request.args.get('id', '')
     boolean = db.deleteUser(myID)
