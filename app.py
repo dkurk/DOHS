@@ -44,12 +44,14 @@ def login():
         button = request.form['button']
         if button == 'Login':
             #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
-            #also check if field is not empty
-            session['ID'] = ID
-            if 'redirectpage' in session:
-                return redirect(session['redirectpage'])
+            if db.userExists(ID):
+                session['ID'] = ID
+                if 'redirectpage' in session:
+                    return redirect(session['redirectpage'])
+                else:
+                    return redirect(url_for('maps'))
             else:
-                return redirect(url_for('maps'))
+                return redirect(url_for('login'))
         elif button == 'Register':
             return redirect(url_for('account'))
 
@@ -68,6 +70,19 @@ def account():
         return render_template("account.html")
 
 
+"""
+Function: update()
+Purpose: page for user to edit profile
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/update",methods=['GET','POST'])
+def update():
+    if request.method=='GET':
+        return render_template("update.html", ID=session['ID'])
+
+
 
 """
 Function: maps()
@@ -80,7 +95,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @requireauth("maps")
 def maps():
     if request.method=='GET':
-        return render_template("maps.html")
+        return render_template("maps.html", ID=session['ID'])
     else:
         button = request.form['button']
         if button == "Logout":
@@ -130,13 +145,28 @@ def getPeopleByGrade():
 
 """
 Function: getProfile()
-Purpose: Gets an ID number from frontend. Passes the ID number to database. Gets the profile associated with the ID number from database. Passes the profile to frontend as a JSON object.
+Purpose: Gets an ID number from frontend. Passes the ID number to database. Gets the profile associated with the ID number from database. Passes the profile to frontend as a string.
 Return: N/A
 Last edited: 1/21/13 at 12:24 by Helen Nie
 """
 
 @app.route("/getProfile")
 def getProfile():
+    idnum = request.args.get('id', '')
+    result = db.toString(idnum)
+    return json.dumps(result)
+
+
+
+"""
+Function: getProfileItems()
+Purpose: Gets an ID number from frontend. Passes the ID number to database. Gets the profile associated with the ID number from database. Passes the profile to frontend as a JSON object.
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/getProfileItems")
+def getProfileItems():
     idnum = request.args.get('id', '')
     result = db.getProfile(idnum)
     return json.dumps(result)
@@ -168,18 +198,65 @@ def saveData():
 
 
 """
+Function: EditData()
+Purpose: Gets the edited info of an existing user from frontend. Passes the changes to database. Passes boolean to frontend upon success/failure.
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/editData")
+def editData():
+    myID = request.args.get('id', '')
+    myFirst = request.args.get('first', '')
+    myLast = request.args.get('last', '')
+    myGrade = request.args.get('grade', '')
+    myRooms = []
+    for i in range(1,11):
+        myRooms.append(request.args.get('room' + str(i), ''))
+    
+    #boolean = db.editProfile("8751", "Helen", "Nie", "12", ["100","200","300","400","500","600","700","800","900","1000"])
+    boolean = db.editProfile(myID, myFirst, myLast, myGrade, myRooms)
+    if boolean == 1:
+        return json.dumps(True)
+    else:
+        return json.dumps(False)
+
+
+
+"""
+Function: deleteUser()
+Purpose: deletes the user with the specified ID from the database. 
+Return: boolean upon success/failure
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+def deleteUser():
+    myID = request.args.get('id', '')
+    boolean = db.deleteUser(myID)
+    return json.dumps(boolean)
+
+
+
+"""
 Function: main
 Purpose: runs the app
 Return: N/A
 Last edited: 1/21/13 at 12:24 by Helen Nie
 """
-
 if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print editData()
+    #print
+    #print deleteUser()
+    #print
+    #print getProfile()
+    #print
     #print saveData()
     #print
     #print getPeople()
     #print
+    #print getPeopleByGrade()
+    #print
     #print getProfile()
+    

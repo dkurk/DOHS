@@ -8,7 +8,7 @@
 <body background ="static/jpg/blue_bars.jpg">
 
 <script src ="static/js/jquery.js"></script>
-<script src ="static/js/account.js"></script>
+<script src ="static/js/update.js"></script>
 
 
 <form action="" method="post">
@@ -18,7 +18,7 @@
 <h1>
 <font face = "desdemona" size = 7>
 Virtual Stuy:</font><font size = 7>
-New Account
+View / Update Account
 </h1>
 </font>
 </div>
@@ -27,15 +27,13 @@ New Account
 </div>
 
 <font size = 6>
-<u>Create your Profile</u>
+<u>Your Profile</u>
 </font>
 <p>
 
 <font size = 5>
-ID: <input type=text id="idnum" value="id">
-<font size = 3>(Your four-digit ID)</font>
+ID: <input type=text id="idnum" value={{ID}}>
 <p>
-<font size = 5>
 Name: <input type=text id="first" value="First Name">
 <input type=text id="last" value="Last Name">
 <p>
@@ -86,9 +84,12 @@ Period 10 Room Number:<input type=text class="rooms">
 <font size = 5>
 <p>
 
-</div>
+<p></div>
 <div align = "center">
-<button type="button" id="submit">Submit!</button>
+<button type="button" id="submit">Update!</button>
+</br>
+<button type="button" id="delete">Delete Account!</button>
+
 </div>
 
 
