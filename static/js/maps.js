@@ -3,6 +3,12 @@
 **This function calls the serve method "getPeople" and pulls out a list of people dictionaries, consisting of student users and pre-added teachers from the database. For each person, it creates a new <circle> element that will be added to the svg that corresponds with the floor this user/teacher should be on during first period. A later update method will respond to changes in floor
 */
 
+
+
+//sets the current period as a global variable
+var currPd;
+
+
 var loadMaps = function() {
 
     $.getJSON("/getPeople", function(people) {
@@ -19,42 +25,44 @@ var loadMaps = function() {
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    newCircle.setAttributeNS(null, 'fill', 'green');
 	    
-	    //added temporary if statement b/c the database has empty lists for rooms --Helen
-	    if (people[i][4] && people[i][4][0]){
-		switch (Math.floor(people[i][4][0] / 100)) {
-		case 1:
-		    $("#svg-one").append(newCircle);
-		    break;
-		case 2:
-		    $("#svg-two").append(newCircle);
-		    break;
-		case 3:
-		    $("#svg-three").append(newCircle);
-		    break;
-		case 4:
-		    $("#svg-four").append(newCircle);
-		    break;
-		case 5:
-		    $("#svg-five").append(newCircle);
-			break;
-		case 6:
-		    $("#svg-six").append(newCircle);
-		    break;
-		case 7:
-		    $("#svg-seven").append(newCircle);
-		    break;
-		case 8:
-		    $("#svg-eight").append(newCircle);
-		    break;
-		case 9:
-		    $("#svg-nine").append(newCircle);
-			break;
-		case 10:
-		    $("#svg-ten").append(newCircle);
-		    break;
-		}
+	    //checks if currently outside school hours
+	    if (currPd == -1){
+		break;
 	    }
-	} 
+
+	    switch (Math.floor(people[i][4][currPd] / 100)) {
+	    case 1:
+		$("#svg-one").append(newCircle);
+		break;
+	    case 2:
+		$("#svg-two").append(newCircle);
+		break;
+	    case 3:
+		$("#svg-three").append(newCircle);
+		break;
+	    case 4:
+		$("#svg-four").append(newCircle);
+		break;
+	    case 5:
+		$("#svg-five").append(newCircle);
+		break;
+	    case 6:
+		$("#svg-six").append(newCircle);
+		break;
+	    case 7:
+		$("#svg-seven").append(newCircle);
+		break;
+	    case 8:
+		$("#svg-eight").append(newCircle);
+		break;
+	    case 9:
+		$("#svg-nine").append(newCircle);
+		break;
+	    case 10:
+		$("#svg-ten").append(newCircle);
+		break;
+	    }
+	}
     });
 }
 
@@ -92,44 +100,77 @@ var loadMapsByGrade = function() {
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    newCircle.setAttributeNS(null, 'fill', 'green');
 	    
-	    //added temporary if statement b/c the database has empty lists for rooms --Helen
-	    if (people[i][4] && people[i][4][0]){
-		switch (Math.floor(people[i][4][0] / 100)) {
-		case 1:
-		    $("#svg-one").append(newCircle);
-		    break;
-		case 2:
-		    $("#svg-two").append(newCircle);
-		    break;
-		case 3:
-		    $("#svg-three").append(newCircle);
-		    break;
-		case 4:
-		    $("#svg-four").append(newCircle);
-		    break;
-		case 5:
-		    $("#svg-five").append(newCircle);
-		    break;
-		case 6:
-		    $("#svg-six").append(newCircle);
-		    break;
-		case 7:
-		    $("#svg-seven").append(newCircle);
-		    break;
-		case 8:
-		    $("#svg-eight").append(newCircle);
-		    break;
-		case 9:
-		    $("#svg-nine").append(newCircle);
-		    break;
-		case 10:
-		    $("#svg-ten").append(newCircle);
-		    break;
-		}
+	    //checks if currently outside school hours
+	    if (currPd == -1){
+		break;
+	    }
+
+	    switch (Math.floor(people[i][4][currPd] / 100)) {
+	    case 1:
+		$("#svg-one").append(newCircle);
+		break;
+	    case 2:
+		$("#svg-two").append(newCircle);
+		break;
+	    case 3:
+		$("#svg-three").append(newCircle);
+		break;
+	    case 4:
+		$("#svg-four").append(newCircle);
+		break;
+	    case 5:
+		$("#svg-five").append(newCircle);
+		break;
+	    case 6:
+		$("#svg-six").append(newCircle);
+		break;
+	    case 7:
+		$("#svg-seven").append(newCircle);
+		break;
+	    case 8:
+		$("#svg-eight").append(newCircle);
+		break;
+	    case 9:
+		$("#svg-nine").append(newCircle);
+		break;
+	    case 10:
+		$("#svg-ten").append(newCircle);
+		break;
 	    }
 	}
     });
+}
+
+
+var setPeriod = function() {
+    //gets current time in a string
+    var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
+
+    //uncomment the next line to test during outside school hours
+    //var currTime = "01/01/2011 09:09:09";
+
+    console.log(currTime);
+
+    //makes a list of the beginnings of pds                          
+    var pds = ["01/01/2011 08:00:00", "01/01/2011 08:45:00", 
+	       "01/01/2011 09:30:00", "01/01/2011 10:19:00", 
+	       "01/01/2011 11:04:00", "01/01/2011 11:49:00", 
+	       "01/01/2011 12:34:00", "01/01/2011 13:19:00", 
+	       "01/01/2011 14:04:00", "01/01/2011 14:49:00"]
     
+    //compares currTime with pds to find currPd    
+    if (Date.parse(currTime) < Date.parse(pds[0]) ||
+        Date.parse(currTime) > Date.parse(pds[9])){
+        currPd = -1;
+    }
+    else{
+        for (var i = 1; i < 10; i++){
+	    if (Date.parse(currTime) < Date.parse(pds[i])){
+                currPd = i;
+		break;
+	    }
+	}
+    }
 }
 
 var zoom = function() {
@@ -137,6 +178,9 @@ var zoom = function() {
 }
  
 $(document).ready(function() {
+    setPeriod();
+    console.log(currPd);
+    
     loadMaps();
     $(".person").click(getProfile);
     $(".choose-grade").change(loadMapsByGrade);
