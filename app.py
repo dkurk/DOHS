@@ -16,7 +16,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 """
 
 global floor, period
-floor = period = 0
+floor = period = 2
 global IDs 
 IDs = []
 
