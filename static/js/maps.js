@@ -94,6 +94,7 @@ var getProfile = function(evt) {
     var circle = evt.target;
     var myID = circle.getAttribute("id");
     $.getJSON("/getProfile", {id:myID}, function(person) {
+	$("#profile").empty();
 	$("#profile").append(person);
   
 	//JSON.stringify(person)	
