@@ -132,9 +132,13 @@ var loadMapsByGrade = function() {
     
 }
 
-
+var zoom = function() {
+    TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
+}
+ 
 $(document).ready(function() {
     loadMaps();
     $(".person").click(getProfile);
     $(".choose-grade").change(loadMapsByGrade);
+    $("#svg-ten").click(zoom);
 });
