@@ -278,9 +278,10 @@ var zoom = function() {
 
     //console.log(myFloor);
 
-    $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString});
+    $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString}, function(data) {
+    });
 
-    var content = '<Iframe Id="FrameTiny" Src="' + 'account' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
+    var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
     TINY.box.show({html: content, width:1200, height:400});
 }
  
@@ -288,7 +289,8 @@ $(document).ready(function() {
     setPeriod();
     var now = currPd;
     console.log(now);
-    $.getJSON("/getPeriod", {period:now});
+    $.getJSON("/getPeriod", {period:now}, function(data) {
+    });
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
