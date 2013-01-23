@@ -457,7 +457,7 @@ def nice_toString(ID):
     schedule = profile[4]
     
     string = '\n'
-    #string += 'ID: ' + str(profile[0]) + '\n'
+    string += 'ID: ' + str(profile[0]) + '\n'
     string += 'Name: ' + profile[1] +' '+ profile[2] + ''
     #string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
     string += '\n'
