@@ -287,7 +287,7 @@ var zoom = function() {
     });
 
     var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="10" Marginheight="10"></Iframe>';
-    TINY.box.show({html: content, width:800, height:600});
+    TINY.box.show({html: content, width: 1000, height:600});
     console.log("showing tiny box");
 }
  

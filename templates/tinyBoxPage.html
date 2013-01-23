@@ -25,20 +25,29 @@
 </div>
 
 <div align = "center">
-  <svg id="zoom-map" xmlns="http://www.w3.org/2000/svg" version="1.1" width="700" height="400"></svg>
+  <svg id="zoom-map-odd" xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="200"></svg>
 </div>
 
+<div id="profile">
+</p>
+</p>
+<p>Profile goes here.</p>
+</p>
+</p>
+</div>
 
+<div align = "center">
+  <svg id="zoom-map-even" xmlns="http://www.w3.org/2000/svg" version="1.1" width="800" height="200"></svg>
+</div>
 
 <form>
   <input type="text" style="display:none;" id="floor" value={{ floor }} />
-<input type="text" style="display:none;" id="period" value={{ period }} />
-
-{% for id in IDs %}
-<input type="text" style="display:none;" id="ID" value= {{ id }} />
-<p> {{ id }} </p>
-{% endfor %}
-
+  <input type="text" style="display:none;" id="period" value={{ period }} />
+  
+  {% for id in IDs %}
+  <input type="text" style="display:none;" class="ID" value= {{ id }} />
+  {% endfor %}
+  
 </form>
 
 </body>

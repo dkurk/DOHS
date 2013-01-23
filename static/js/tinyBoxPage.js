@@ -1,23 +1,23 @@
 var makeMap = function() {
     
     //gets the svg document
-    map = $("#zoom-map");
+    var oddMap = $("#zoom-map-odd");
+    var evenMap = $("#zoom-map-even");
     
     //gets the floor number
-    floor = parseFloat($("#floor").attr("value"));
+    var floor = parseFloat($("#floor").attr("value"));
     console.log(floor);
 
     //gets svg document info
-    var width = parseFloat(map.attr("width"));
-    var height = parseFloat(map.attr("height"));
+    var width = parseFloat(oddMap.attr("width"));
+    var height = parseFloat(oddMap.attr("height"));
     
     //sets rows and columns
     var cols = 20;
-    var rows = 3;
 
     //sets w h for each room
     var w = width / cols;
-    var h = height / rows;
+    var h = height;
     
     //builds floor
     switch (floor) {
@@ -25,45 +25,46 @@ var makeMap = function() {
 	$("#message").append('<p>No floor to display</p>');
 	break;
     case 1:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 2:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 3:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 4:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 5:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 6:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 7:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 8:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 9:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     case 10:
-	makeDefault(map, floor, w, h);
+	makeDefault(oddMap, evenMap, floor, w, h);
 	break;
     }
 }
 
-var makeDefault = function(map, floor, w, h){
+var makeDefault = function(oddMap, evenMap, floor, w, h){
     var x = 0;
     var y = 0;
     
     var svgns = "http://www.w3.org/2000/svg";
 
-    map.empty();
+    oddMap.empty();
+    evenMap.empty();
 
     for (var i = 1; i < 41; i = i + 2) {
 	
@@ -79,13 +80,12 @@ var makeDefault = function(map, floor, w, h){
         newRoom.setAttributeNS(null, 'stroke', 'black');
         newRoom.setAttributeNS(null, 'fill', 'white');	
 	
-	map.append(newRoom);
+	oddMap.append(newRoom);
 	
 	x = x + w;
     }
 
     x = 0;
-    y = 2 * h;
 
     for (var i = 0; i < 41; i = i + 2) {
 	room = floor * 100 + i;
@@ -100,37 +100,106 @@ var makeDefault = function(map, floor, w, h){
         newRoom.setAttributeNS(null, 'stroke', 'black');
         newRoom.setAttributeNS(null, 'fill', 'white');	
 
-	map.append(newRoom);
+	evenMap.append(newRoom);
 	x = x + w;
     }
 }
     
 
 var addPeople = function(){
+    
+    //gets the svg document
+    var oddMap = $("#zoom-map-odd");
+    var evenMap = $("#zoom-map-even");
+    
+    //gets the floor number
+    var floor = parseFloat($("#floor").attr("value"));
+
+    //gets svg document info
+    var width = parseFloat(oddMap.attr("width"));
+    var height = parseFloat(oddMap.attr("height"));
+    
+    //sets rows and columns
+    var cols = 20;
+    var rows = 3;
+
+    //sets w h for each room
+    var w = width / cols;
+    var h = height;
+
+    var room;
     var period = $("#period").attr('value');
     var ids = [];
-    for (id in $("#ID")){
-	ids.push($("#ID")[id].value);
+    for (var i = 0; i < $(".ID").length; i++){
+	ids.push($(".ID")[i].value);
     }
-    var room;
     
     console.log(ids);
     console.log(period);
 
+    var svgns = "http://www.w3.org/2000/svg";
 
-    //console.log(IDs);
-    
-    /*
-    for (var i in IDs){
-	$.getJSON("/getProfileItems", {id:IDs[i]}, function(profile){
-	    room = profile[4][period - 1];
-	    console.log(room);
-	});
+    for (var i in ids){
+	$.getJSON("/getProfileItems", {id:ids[i]}, function(profile){
+	    var room = profile[4][period - 1];
+	    var roomId = '#' + room;
+	    var myX = (parseFloat($(roomId).attr('x')) + 5) + (Math.floor(Math.random() * (w - 10)));
+	    var myY = (parseFloat($(roomId).attr('y')) + 5) + (Math.floor(Math.random() * (h - 10)));
+	    
+	    var newCircle = document.createElementNS(svgns, "circle");
+	    newCircle.setAttributeNS(null, 'class', 'person');
+	    newCircle.setAttributeNS(null, 'id', ids[i]);
+	    newCircle.setAttributeNS(null, 'cx', myX); 
+	    newCircle.setAttributeNS(null, 'cy', myY);
+	    newCircle.setAttributeNS(null, 'r', 10);
+	    newCircle.setAttributeNS(null, 'stroke', 'black');
+	    var color;
+	    switch (profile[3]) {
+	    case 0:
+                color = "red";
+                break;
+	    case "9":
+		color = "green";
+                break;
+	    case "10":
+                color = "brown";
+                break;
+	    case "11":
+                color = "magenta";
+                break;
+	    case "12":
+                color = "yellow";
+                break;
+	    }
+	    newCircle.setAttributeNS(null, 'fill', color);
+	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
+
+	    switch (room % 2) {
+	    case 1:
+		oddMap.append(newCircle);
+		break;
+	    case 0:
+		evenMap.append(newCircle);
+		break;
+	    }
+	});	
     }
-    */
 }
 
-    
+/*func getProfile()
+**@params: none  
+**This function, assigned on click to each bubble representing a student or teacher on the 10 svg maps takes the ID number/keyword of the clicked user and calls the "getProfile" server-side method to return
+the object the bubble represents. The profile information of this user/teacher will then be printed on a div at the bottom of the page. */
+
+var getProfile = function(evt) {
+    var circle = evt.target;
+    var myID = circle.getAttribute("id");
+    $.getJSON("/getProfile", {id:myID}, function(person) {
+        $("#profile").empty();
+        $("#profile").append(person);
+    });
+}
+
 $(document).ready(function() {
     makeMap();
     addPeople();
