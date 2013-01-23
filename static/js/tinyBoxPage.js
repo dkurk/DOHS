@@ -138,17 +138,27 @@ var addPeople = function(){
     console.log(period);
 
     var svgns = "http://www.w3.org/2000/svg";
-
-    for (var i in ids){
-	$.getJSON("/getProfileItems", {id:ids[i]}, function(profile){
+    
+    for (var j = 0; j < ids.length; j++){
+	$.getJSON("/getProfileItems", {id:ids[j]}, function(profile){
 	    var room = profile[4][period - 1];
 	    var roomId = '#' + room;
-	    var myX = (parseFloat($(roomId).attr('x')) + 5) + (Math.floor(Math.random() * (w - 10)));
-	    var myY = (parseFloat($(roomId).attr('y')) + 5) + (Math.floor(Math.random() * (h - 10)));
-	    
+
+	    //add cases for cafeteria, gym, nurses office, etc
+	    //this for now
+	    if (parseFloat(room) > (100 * floor + 40)){
+		var myX = (width - 10) - Math.floor(Math.random() * (w - 10));
+		var myY = Math.floor(Math.random() * h);
+	    }
+	    //regular room numbers
+	    else{
+		var myX = (parseFloat($(roomId).attr('x')) + 5) + (Math.floor(Math.random() * (w - 20)));
+		var myY = (parseFloat($(roomId).attr('y')) + 5) + (Math.floor(Math.random() * (h - 20)));
+	    }
+
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
-	    newCircle.setAttributeNS(null, 'id', ids[i]);
+	    newCircle.setAttributeNS(null, 'id', profile[0]);
 	    newCircle.setAttributeNS(null, 'cx', myX); 
 	    newCircle.setAttributeNS(null, 'cy', myY);
 	    newCircle.setAttributeNS(null, 'r', 10);
@@ -192,12 +202,13 @@ var addPeople = function(){
 the object the bubble represents. The profile information of this user/teacher will then be printed on a div at the bottom of the page. */
 
 var getProfile = function(evt) {
-    var circle = evt.target;
-    var myID = circle.getAttribute("id");
-    $.getJSON("/getProfile", {id:myID}, function(person) {
+    var c = evt.target;
+    var proID = c.getAttribute("id");
+    $.getJSON("/getProfile", {id:proID}, function(person) {
         $("#profile").empty();
         $("#profile").append(person);
     });
+    console.log("called getProfile");
 }
 
 $(document).ready(function() {
