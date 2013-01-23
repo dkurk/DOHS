@@ -85,8 +85,8 @@ def account():
 
     else:
         button = request.form['button']
-        if button == "Go back to the maps!":
-            return redirect(url_for('maps'))
+        if button == "Account created. Click to log in!":
+            return redirect(url_for('login'))
 
 """
 Function: update()
@@ -103,6 +103,8 @@ def update():
         button = request.form['button']
         if button == "Go back to the maps!":
             return redirect(url_for('maps'))
+        #if button == "Delete Account!":
+            #return redirect(url_for('login'))
 
 
 """
@@ -319,6 +321,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 def getPeriod():
     global period
     period = request.args.get('period', '')
+    print period
     return json.dumps(True)
 
 """
