@@ -321,7 +321,7 @@ def smsTeacherRoom():
 	teacher = request.values.get('Body', None)
 	result = db.getTeacherLoc(teacher, period)
 	response = twilio.twiml.Response()
-	response.sms(result)
+	response.sms(json.dumps(result))
 	return str(response)
 
 
