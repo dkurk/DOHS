@@ -99,8 +99,11 @@ var getProfile = function(evt) {
     var circle = evt.target;
     var myID = circle.getAttribute("id");
     $.getJSON("/getProfile", {id:myID}, function(person) {
-	$("#profile").empty();
-	$("#profile").append(person);
+	$("#restOfProfiles").empty();
+	$("#schedule").empty();
+	console.log(person);
+	$("#restOfProfiles").append(person[0]);
+	$("#schedule").append(person[1]);
   
 	//JSON.stringify(person)	
     });
