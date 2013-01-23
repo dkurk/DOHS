@@ -21,10 +21,15 @@ NOTE: This could potentially be but is NOT meant to be a stalking device.
 
 *Link to App:*
 
+
+
 *Work Distribution:*
 
 Oliver Ball: database backend (db.py)
+
 Shreya Kalva: templates, styling, twilio
+
 David Kurkovskiy: templates, JavaScript, app.py
+
 Helen Nie: templates, JavaScript, app.py
 -- 
