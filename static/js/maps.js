@@ -288,6 +288,7 @@ var zoom = function() {
 
     var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
     TINY.box.show({html: content, width:1200, height:400});
+    console.log("showing tiny box");
 }
  
 $(document).ready(function() {
