@@ -85,8 +85,8 @@ def account():
 
     else:
         button = request.form['button']
-        if button == "Go back to the maps!":
-            return redirect(url_for('maps'))
+        if button == "Account created. Click to log in!":
+            return redirect(url_for('login'))
 
 
 """
