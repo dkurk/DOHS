@@ -377,7 +377,7 @@ def toString(ID):
     string1 += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
    
     string2 = ''
-    string2 += '<p><b>Schedule:</b></p>'
+    string2 += '<p><b>SCHEDULE:</b></p>'
 
     i = 0
     for period in schedule:
