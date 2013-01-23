@@ -9,6 +9,11 @@ body {
 }
 
 
+#zoom-map {
+	border-style: solid;
+
+}
+
 #svg-ten {
 	border-style: solid;
 

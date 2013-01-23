@@ -36,6 +36,8 @@ var saveAccount = function(p1) {
 	console.log(bool);
 	if (!bool)
 	    $("#message").text("Sorry, an account by that ID already exists. Please sign up another account.");
+	else
+	    $("#success").show();
     });
 }
 

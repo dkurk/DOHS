@@ -9,6 +9,20 @@ app.secret_key="blah"
 
 
 """
+Function: sets global variables
+Purpose: for tiny box popup
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+global floor, period
+floor = period = 1
+global IDs 
+IDs = ["1111"]
+
+
+
+"""
 Function: requireauth(page)
 Purpose: when wrapped around a page, requires that the user is logged in before viewing the page. Also redirects the user back to the page upon logging in.
 Return: N/A
@@ -100,6 +114,21 @@ def maps():
         button = request.form['button']
         if button == "Logout":
             return redirect(url_for('logout'))
+
+
+
+"""
+Function: tinyBoxPage()
+Purpose: page thats displays inside tiny box popouts
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/tinyBoxPage",methods=['GET','POST'])
+def tinyBoxPage():
+    if request.method=='GET':
+        return render_template("tinyBoxPage.html", floor=floor, period=period, IDs=IDs)
+
 
 
 """
@@ -237,6 +266,51 @@ def deleteUser():
 
 
 
+
+"""
+Function: getTinyBoxData()
+Purpose: gets the data needed to construct the tiny box from maps.js
+Return: sets global variables relevant to data
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getTinyBoxData")
+def getTinyBoxData():
+    global floor, period, IDs
+    floor = request.args.get('floor', '')
+    period = request.args.get('period', '')
+    idString = request.args.get('idString', '')
+
+    IDs = idString.split(",")
+     
+
+                  
+"""
+Function: getTeacherLoc()
+Purpose: gets teachers' locations
+Return: dumps location to request source
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getTeacherLoc")
+def getTeacherLoc():
+    global period
+    last = request.args.get('last', '')
+        
+    value = db.getTeacherLoc(last, period)
+    return json.dumps(value)
+
+
+"""
+Function: getPeriod()
+Purpose: gets current period
+Return: sets global variable period relevant to data
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getPeriod")
+def getPeriod():
+    global period
+    period = request.args.get('period', '')
+
+
 """
 Function: main
 Purpose: runs the app
@@ -247,6 +321,15 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print getTeacherLoc()
+    #print
+
+    #print getTinyBoxData()
+    #print
+    #print floor
+    #print period
+    #print IDs
+
     #print editData()
     #print
     #print deleteUser()
