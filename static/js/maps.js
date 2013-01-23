@@ -286,7 +286,9 @@ var zoom = function() {
  
 $(document).ready(function() {
     setPeriod();
-    console.log(currPd);
+    var now = currPd;
+    console.log(now);
+    $.getJSON("/getPeriod", {period:now});
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
@@ -300,4 +302,15 @@ $(document).ready(function() {
     $("#svg-three").click(zoom);
     $("#svg-two").click(zoom);
     $("#svg-one").click(zoom);
+
+    setInterval(function() {
+	var pdBefore = currPd;
+	setPeriod();
+	var pdAfter = currPd;
+	if (pdBefore != pdAfter) {
+	    $.getJSON("/getPeriod", {period:currPd});
+	    loadMaps();
+	}
+    }, 500);
+
 });
