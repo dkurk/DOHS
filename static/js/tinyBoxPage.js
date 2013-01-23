@@ -96,12 +96,31 @@ var makeDefault = function(map, w, h){
         newRoom.setAttributeNS(null, 'fill', 'white');	
 
 	map.append(newRoom);
-
 	x = x + w;
     }
 }
     
+
+var addPeople = function(){
+    var period = $("#period");
+    var IDs = $("#IDs");
+    var room;
+    
+    //console.log(IDs);
+    
+    /*
+    for (var i in IDs){
+	$.getJSON("/getProfileItems", {id:IDs[i]}, function(profile){
+	    room = profile[4][period - 1];
+	    console.log(room);
+	});
+    }
+    */
+}
+
+    
 $(document).ready(function() {
     makeMap();
+    addPeople();
 });
 
