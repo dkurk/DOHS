@@ -229,16 +229,19 @@ Input: A string last name and an int period.
 Purpose: Get the room that people with last name last are in during the given period. 
 Return: A list of users matching the description given. Formatted [[first, last, room], [first,last,room]]
 
-Last edited: 1/22/13 at 3:20 by Oliver Ball
+Last edited: 1/22/13 at 8:39 by Oliver Ball
 """
 
 def getTeacherLoc(last, period):
     db = shelve.open('people.db', writeback = False)
     value = []
     period = int(period)
+
     for ID in db:
-        if db[ID][2] == last:
-            user = [db[1], db[2], db[4][period-1]]
+        #print ID
+        if (ID != 'New ID' and
+        db[ID][2] == last):
+            user = [db[ID][1], db[ID][2], db[ID][4][period-1]]
             value.append(user)
 
     return value
@@ -478,7 +481,13 @@ if __name__ == "__main__":
     #translate_master()
     #nice_dump()
 
-    find_max_floor()
+    #find_max_floor()
+
+    dump()
+    x = 'Polazzo'
+    y = 5
+    print getTeacherLoc(x, y)
+    
 
 #to do:
 
