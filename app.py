@@ -281,7 +281,37 @@ def getTinyBoxData():
     idString = request.args.get('idString', '')
 
     IDs = idString.split(",")
-                       
+     
+
+                  
+"""
+Function: getTeacherLoc()
+Purpose: gets teachers' locations
+Return: dumps location to request source
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getTeacherLoc")
+def getTeacherLoc():
+    global period
+    #last = request.args.get('last', '')
+    last = "zamansky"
+    period = "6"
+    
+    value = db.getTeacherLoc(last, period)
+    return json.dumps(value)
+
+
+"""
+Function: getPeriod()
+Purpose: gets current period
+Return: sets global variable period relevant to data
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getPeriod")
+def getPeriod():
+    global period
+    period = request.args.get('period', '')
+
 
 """
 Function: main
@@ -293,6 +323,9 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print getTeacherLoc()
+    #print
+
     #print getTinyBoxData()
     #print
     #print floor
