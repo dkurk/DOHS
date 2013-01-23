@@ -205,10 +205,12 @@ var getProfile = function(evt) {
     var c = evt.target;
     var proID = c.getAttribute("id");
     $.getJSON("/getProfile", {id:proID}, function(person) {
-        $("#profile").empty();
-        $("#profile").append(person);
+        $("#restOfProfiles").empty();
+        $("#schedule").empty();
+        console.log(person);
+        $("#restOfProfiles").append(person[0]);
+        $("#schedule").append(person[1]);
     });
-    console.log("called getProfile");
 }
 
 $(document).ready(function() {
