@@ -407,6 +407,21 @@ def start_fresh():
     return str(db)
 
 
+def find_max_floor():
+    db = shelve.open('people.db')
+    rooms = [1,2,3,4,5,6,7,8,9,10]
+    for user in db:
+        print 'user: ' + str(user)
+        if (user != 'New ID'):
+            schedule = db[user][4]
+            for room in schedule:
+                if room > rooms[floor(room) - 1]:
+                    print
+                    rooms[floor(room) - 1] = room
+
+    print rooms
+
+
 """
 Function: dump()
 Purpose: Just prints out a dump of the database. Simple stuff.
@@ -459,9 +474,11 @@ if __name__ == "__main__":
     #print '\nTesting toString:\n'
     #print toString(8454) + '\n'
 
-    print start_fresh()
-    translate_master()
-    nice_dump()
+    #print start_fresh()
+    #translate_master()
+    #nice_dump()
+
+    find_max_floor()
 
 #to do:
 
