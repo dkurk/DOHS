@@ -44,45 +44,49 @@ var loadMaps = function() {
 	    newCircle.setAttributeNS(null, 'fill', color);
 	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
 	    
-	    //checks if currently outside school hours
-	    if (currPd == -1){
-		break;
-	    }
+	    var f;
 	    
 	    try {
+		//checks if currently outside school hours
+		if (currPd == -1){
+		    f = Math.floor(people[i][4][0] / 100);
+		}
+		else{
+		    f = Math.floor(people[i][4][currPd -1] / 100);
+		}
 
-	    switch (Math.floor(people[i][4][currPd-1] / 100)) {
-	    case 1:
-		$("#svg-one").append(newCircle);
+		switch (f){
+		case 1:
+		    $("#svg-one").append(newCircle);
+		    break;
+		case 2:
+		    $("#svg-two").append(newCircle);
+		    break;
+		case 3:
+		    $("#svg-three").append(newCircle);
+		    break;
+		case 4:
+		    $("#svg-four").append(newCircle);
+		    break;
+		case 5:
+		    $("#svg-five").append(newCircle);
+		    break;
+		case 6:
+		    $("#svg-six").append(newCircle);
+		    break;
+		case 7:
+		    $("#svg-seven").append(newCircle);
+		    break;
+		case 8:
+		    $("#svg-eight").append(newCircle);
+		    break;
+		case 9:
+		    $("#svg-nine").append(newCircle);
+		    break;
+		case 10:
+		    $("#svg-ten").append(newCircle);
 		break;
-	    case 2:
-		$("#svg-two").append(newCircle);
-		break;
-	    case 3:
-		$("#svg-three").append(newCircle);
-		break;
-	    case 4:
-		$("#svg-four").append(newCircle);
-		break;
-	    case 5:
-		$("#svg-five").append(newCircle);
-		break;
-	    case 6:
-		$("#svg-six").append(newCircle);
-		break;
-	    case 7:
-		$("#svg-seven").append(newCircle);
-		break;
-	    case 8:
-		$("#svg-eight").append(newCircle);
-		break;
-	    case 9:
-		$("#svg-nine").append(newCircle);
-		break;
-	    case 10:
-		$("#svg-ten").append(newCircle);
-		break;
-	    }
+		}
 	    }
 	    catch(err){
 	    }
@@ -148,43 +152,53 @@ var loadMapsByGrade = function() {
 	    }
 	    newCircle.setAttributeNS(null, 'fill', color);
 	    newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
-	    
-	    //checks if currently outside school hours
-	    if (currPd == -1){
-		break;
-	    }
+	   
 
-	    switch (Math.floor(people[i][4][currPd-1] / 100)) {
-	    case 1:
-		$("#svg-one").append(newCircle);
-		break;
-	    case 2:
-		$("#svg-two").append(newCircle);
-		break;
-	    case 3:
-		$("#svg-three").append(newCircle);
-		break;
-	    case 4:
-		$("#svg-four").append(newCircle);
-		break;
-	    case 5:
-		$("#svg-five").append(newCircle);
-		break;
-	    case 6:
-		$("#svg-six").append(newCircle);
-		break;
-	    case 7:
-		$("#svg-seven").append(newCircle);
-		break;
-	    case 8:
-		$("#svg-eight").append(newCircle);
-		break;
-	    case 9:
-		$("#svg-nine").append(newCircle);
-		break;
-	    case 10:
-		$("#svg-ten").append(newCircle);
-		break;
+	    var f;
+	    
+	    try {
+		//checks if currently outside school hours
+		if (currPd == -1){
+		    f = Math.floor(people[i][4][0] / 100);
+		}
+		else{
+		    f = Math.floor(people[i][4][currPd -1] / 100);
+		}
+
+		switch (f){
+		case 1:
+		    $("#svg-one").append(newCircle);
+		    break;
+		case 2:
+		    $("#svg-two").append(newCircle);
+		    break;
+		case 3:
+		    $("#svg-three").append(newCircle);
+		    break;
+		case 4:
+		    $("#svg-four").append(newCircle);
+		    break;
+		case 5:
+		    $("#svg-five").append(newCircle);
+		    break;
+		case 6:
+		    $("#svg-six").append(newCircle);
+		    break;
+		case 7:
+		    $("#svg-seven").append(newCircle);
+		    break;
+		case 8:
+		    $("#svg-eight").append(newCircle);
+		    break;
+		case 9:
+		    $("#svg-nine").append(newCircle);
+		    break;
+		case 10:
+		    $("#svg-ten").append(newCircle);
+		    break;
+		}
+	    }
+	    catch(err){
 	    }
 	}
     });
@@ -193,10 +207,10 @@ var loadMapsByGrade = function() {
 
 var setPeriod = function() {
     //gets current time in a string
-    //var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
+    var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
 
     //uncomment the next line to test during outside school hours
-    var currTime = "01/01/2011 09:09:09";
+    //var currTime = "01/01/2011 09:09:09";
 
     console.log(currTime);
 
@@ -205,15 +219,16 @@ var setPeriod = function() {
 	       "01/01/2011 09:30:00", "01/01/2011 10:19:00", 
 	       "01/01/2011 11:04:00", "01/01/2011 11:49:00", 
 	       "01/01/2011 12:34:00", "01/01/2011 13:19:00", 
-	       "01/01/2011 14:04:00", "01/01/2011 14:49:00"]
+	       "01/01/2011 14:04:00", "01/01/2011 14:49:00",
+	       "01/01/2011 15:30:00"]
     
     //compares currTime with pds to find currPd    
     if (Date.parse(currTime) < Date.parse(pds[0]) ||
-        Date.parse(currTime) > Date.parse(pds[9])){
+        Date.parse(currTime) > Date.parse(pds[10])){
         currPd = -1;
     }
     else{
-        for (var i = 1; i < 10; i++){
+        for (var i = 1; i <= 10; i++){
 	    if (Date.parse(currTime) < Date.parse(pds[i])){
                 currPd = i;
 		break;
