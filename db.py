@@ -312,7 +312,8 @@ def translate_master():
             elements[5] != 'TBA' and
             elements[4] != 'MD LUNCH' and
             elements[4] != 'FOURTPDLCH' and
-            elements[4] != 'NO CLASS' and        
+            elements[4] != 'NO CLASS' and      
+            elements[4] != 'SEE GUIDANCE' and
             int(elements[3]) <= 10):
 
             course_code = elements[0]
@@ -322,17 +323,13 @@ def translate_master():
             if room in translations:
                 room = translations[room]
                 
-            print '\ncheck 3'
-            
             db = shelve.open('people.db', writeback = True) 
-            print '\ncheck 4'
             dump()
             print db['New ID']
             new_id = db['New ID']
-            print '\ncheck 5'
-            db.close()
-            print '\ncheck 6'
             
+            db.close()
+                        
             log = shelve.open('name_log.db', writeback = True)
             if not(last_name in log):
                 log.close()
@@ -441,7 +438,7 @@ def dump():
 def nice_dump():
     db = shelve.open('people.db')
     for ID in db:
-        print toString(ID)
+        print nice_toString(ID)
     db.close()
 
 def dumplog():
@@ -449,6 +446,29 @@ def dumplog():
     log = shelve.open('name_log.db')
     print log
     log.close()
+
+def nice_toString(ID):
+    ID = str(ID)
+    profile = getProfile(ID)
+    
+    if isinstance(profile, int):
+        return 'New ID'
+    
+    schedule = profile[4]
+    
+    string = '\n'
+    string += 'ID: ' + str(profile[0]) + '\n'
+    string += 'Name: ' + profile[1] +' '+ profile[2] + ''
+    #string += 'Grade: ' + gradelist[str(profile[3])] + '\n'
+    string += '\n'
+    
+    i = 0
+    for period in schedule:
+        string += '\tPeriod' +str(i + 1)+ ' : Room ' + str(period) + '  '
+        i = i+1
+    
+    return string
+
 
 """
 Function: userExists(int/string ID)
@@ -463,7 +483,8 @@ def userExists(ID):
     ID = str(ID)
     value = False
     
-    if ID in db:
+    if (ID in db and
+        db[ID][3] != 0):
         value = True
     
     return value
@@ -483,10 +504,10 @@ if __name__ == "__main__":
 
     #find_max_floor()
 
-    dump()
-    x = 'Polazzo'
-    y = 5
-    print getTeacherLoc(x, y)
+    nice_dump()
+    #x = 'Polazzo'
+    #y = 5
+    #print getTeacherLoc(x, y)
     
 
 #to do:
