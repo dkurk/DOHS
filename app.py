@@ -3,6 +3,8 @@ from flask import session
 from functools import wraps
 import urllib2,json
 import db
+import twilio.twiml
+import twilioAcc
 
 app = Flask(__name__)
 app.secret_key="blah"
@@ -307,6 +309,20 @@ def getTeacherLoc():
     value = db.getTeacherLoc(last, period)
     return json.dumps(value)
 
+"""
+Function: smsTeacherRoom()
+Purpose: sends an sms, containing a list of teacher(s) room(s) during the current period, in response to a text containing the teacher's last name
+Return: the sms
+Last edited: 1/22/13 at 11:27 by Shreya Kalva
+"""
+
+@app.route("/smsTeacherRoom", methods=['GET', 'POST'])
+def smsTeacherRoom():
+	teacher = request.values.get('Body', None)
+	result = db.getTeacherLoc(teacher, period)
+	response = twilio.twiml.Response()
+	response.sms(result)
+	return str(response)
 
 
 """
