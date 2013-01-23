@@ -85,8 +85,24 @@ def account():
 
     else:
         button = request.form['button']
-        if button == "Account created. Click to log in!":
-            return redirect(url_for('login'))
+        if button == "Go back to the maps!":
+            return redirect(url_for('maps'))
+
+"""
+Function: update()
+Purpose: page for user to edit profile
+Return: N/A
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+
+@app.route("/update",methods=['GET','POST'])
+def update():
+    if request.method=='GET':
+        return render_template("update.html", ID=session['ID'])
+    else:
+        button = request.form['button']
+        if button == "Go back to the maps!":
+            return redirect(url_for('maps'))
 
 
 """
@@ -285,10 +301,12 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/getTeacherLoc")
 def getTeacherLoc():
     global period
-    last = request.args.get('last', '')
+    clast = request.args.get('last', '')
+    last = ulast.title() 
         
     value = db.getTeacherLoc(last, period)
     return json.dumps(value)
+
 
 
 """
