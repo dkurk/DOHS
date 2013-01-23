@@ -286,8 +286,8 @@ var zoom = function() {
     $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString}, function(data) {
     });
 
-    var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
-    TINY.box.show({html: content, width:1200, height:400});
+    var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="10" Marginheight="10"></Iframe>';
+    TINY.box.show({html: content, width:800, height:600});
     console.log("showing tiny box");
 }
  
