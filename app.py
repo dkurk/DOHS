@@ -83,19 +83,10 @@ def account():
     if request.method=='GET':
         return render_template("account.html")
 
-
-"""
-Function: update()
-Purpose: page for user to edit profile
-Return: N/A
-Last edited: 1/21/13 at 12:24 by Helen Nie
-"""
-
-@app.route("/update",methods=['GET','POST'])
-def update():
-    if request.method=='GET':
-        return render_template("update.html", ID=session['ID'])
-
+    else:
+        button = request.form['button']
+        if button == "Go back to the maps!":
+            return redirect(url_for('maps'))
 
 
 """
@@ -114,7 +105,8 @@ def maps():
         button = request.form['button']
         if button == "Logout":
             return redirect(url_for('logout'))
-
+        elif button == "View/Update Your Profile":
+            return redirect(url_for('update'))
 
 
 """
@@ -281,7 +273,7 @@ def getTinyBoxData():
     idString = request.args.get('idString', '')
 
     IDs = idString.split(",")
-     
+    return json.dumps(True)
 
                   
 """
@@ -309,7 +301,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 def getPeriod():
     global period
     period = request.args.get('period', '')
-
+    return json.dumps(True)
 
 """
 Function: main
