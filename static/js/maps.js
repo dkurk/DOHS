@@ -21,11 +21,11 @@ var loadMaps = function() {
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
 	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
 	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
-	    newCircle.setAttributeNS(null, 'r', 2);
+	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
 	    switch (people[i][3]) {
-	    case "0":
+	    case 0:
 		color = "red";
 		break;
 	    case "9":
@@ -48,6 +48,8 @@ var loadMaps = function() {
 	    if (currPd == -1){
 		break;
 	    }
+	    
+	    try {
 
 	    switch (Math.floor(people[i][4][currPd-1] / 100)) {
 	    case 1:
@@ -80,6 +82,9 @@ var loadMaps = function() {
 	    case 10:
 		$("#svg-ten").append(newCircle);
 		break;
+	    }
+	    }
+	    catch(err){
 	    }
 	}
     });
@@ -118,11 +123,11 @@ var loadMapsByGrade = function() {
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
 	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
 	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
-	    newCircle.setAttributeNS(null, 'r', 2);
+	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
 	    switch (people[i][3]) {
-	    case "0":
+	    case 0:
 		color = "red";
 		break;
 	    case "9":
@@ -281,8 +286,9 @@ var zoom = function() {
     $.getJSON("/getTinyBoxData", {floor:myFloor, period:currPd, idString:idString}, function(data) {
     });
 
-    var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="0" Marginheight="0"></Iframe>';
-    TINY.box.show({html: content, width:1200, height:400});
+    var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="10" Marginheight="10"></Iframe>';
+    TINY.box.show({html: content, width: 1000, height:600});
+    console.log("showing tiny box");
 }
  
 $(document).ready(function() {
@@ -310,7 +316,8 @@ $(document).ready(function() {
 	setPeriod();
 	var pdAfter = currPd;
 	if (pdBefore != pdAfter) {
-	    $.getJSON("/getPeriod", {period:currPd});
+	    $.getJSON("/getPeriod", {period:currPd}, function(data){
+	    });
 	    loadMaps();
 	}
     }, 500);
