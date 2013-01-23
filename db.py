@@ -379,7 +379,11 @@ def toString(ID):
 
     i = 0
     for period in schedule:
-        string += '<p><b>&nbsp&nbsp&nbsp&nbspPeriod</b>' +str(i + 1)+ ' : <b>Room</b> ' + str(period) + '</p>'
+        string += '<p><b>&nbsp&nbsp&nbsp&nbspPeriod</b>' +str(i + 1)
+        if period > 0:
+            string += ' : <b>Room</b> ' + str(period) + '</p>'
+        else:
+            string += '</p>'
         i = i+1
     
     return string
