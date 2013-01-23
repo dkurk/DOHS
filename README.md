@@ -1,13 +1,13 @@
 DOHS
 ====
 
-*Project Title:* Virtual Stuy
+**Project Title:** Virtual Stuy
 
-*Group Members:* Oliver Ball, Shreya Kalva, David Kurkovskiy, Helen Nie
+**Group Members:** Oliver Ball, Shreya Kalva, David Kurkovskiy, Helen Nie
 
-*General Description:* Welcome to Virtual Stuy! This is an implementation of a geographic social network for schools, businesses, any place where you'd find a lot of people! We specifically made it to represent Stuy, but it can easily be adapted for future semesters as well as for other schools. 
+**General Description:** Welcome to Virtual Stuy! This is an implementation of a geographic social network for schools, businesses, any place where you'd find a lot of people! We specifically made it to represent Stuy, but it can easily be adapted for future semesters as well as for other schools. 
 
-*User Manual:* In order to enter your information/schedule click on the Register button. Enter in your ID, First name, Last name, grade, and the room number of all your classes periods 1 to 10. If you don't have a class that period you can either enter the floor you are usually on during that period times 100 (e.g. 500 if you are on the 5th floor) or -1.
+**User Manual:** In order to enter your information/schedule click on the Register button. Enter in your ID, First name, Last name, grade, and the room number of all your classes periods 1 to 10. If you don't have a class that period you can either enter the floor you are usually on during that period times 100 (e.g. 500 if you are on the 5th floor) or -1.
 
 Once you submit your new account information, click the button to return to the login screen and log in with your ID! You will then be able to see the maps, going from floors 10 to 1 depicting all the students that are on the floor during the current period. (The default period is set to 2.) Click on any of these maps to zoom in, where you can see a rought map of the rooms on that floor.
 
@@ -19,17 +19,17 @@ We have preadded the teachers based on their schedules (they are the red dots!) 
 
 NOTE: This could potentially be but is NOT meant to be a stalking device.
 
-*Link to App:*
+**Link to App:**
 
 
 
-*Work Distribution:*
+**Work Distribution:**
 
-Oliver Ball: database backend (db.py)
+*Oliver Ball:* database backend (db.py)
 
-Shreya Kalva: templates, styling, twilio
+*Shreya Kalva:* templates, styling, twilio
 
-David Kurkovskiy: templates, JavaScript, app.py
+*David Kurkovskiy:* templates, JavaScript, app.py
 
-Helen Nie: templates, JavaScript, app.py
+*Helen Nie:* templates, JavaScript, app.py
 -- 
