@@ -121,6 +121,6 @@ var addPeople = function(){
     
 $(document).ready(function() {
     makeMap();
-    addPeople();
+    //addPeople();
 });
 
