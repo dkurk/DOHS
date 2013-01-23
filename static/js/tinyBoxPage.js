@@ -25,50 +25,53 @@ var makeMap = function() {
 	$("#message").append('<p>No floor to display</p>');
 	break;
     case 1:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 2:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 3:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 4:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 5:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 6:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 7:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 8:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 9:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     case 10:
-	makeDefault(map, w, h);
+	makeDefault(map, floor, w, h);
 	break;
     }
 }
 
-var makeDefault = function(map, w, h){
+var makeDefault = function(map, floor, w, h){
     var x = 0;
     var y = 0;
     
+    var svgns = "http://www.w3.org/2000/svg";
+
     map.empty();
 
     for (var i = 1; i < 41; i = i + 2) {
-        var svgns = "http://www.w3.org/2000/svg";
 	
+	room = floor * 100 + i;
+
         var newRoom = document.createElementNS(svgns, "rect");
         newRoom.setAttributeNS(null, 'class', 'room');
-        newRoom.setAttributeNS(null, 'id', 300 + i);
+        newRoom.setAttributeNS(null, 'id', room);
         newRoom.setAttributeNS(null, 'x', x);
         newRoom.setAttributeNS(null, 'y', y);
         newRoom.setAttributeNS(null, 'width', w);
@@ -85,9 +88,11 @@ var makeDefault = function(map, w, h){
     y = 2 * h;
 
     for (var i = 0; i < 41; i = i + 2) {
+	room = floor * 100 + i;
+	
         var newRoom = document.createElementNS(svgns, "rect");
         newRoom.setAttributeNS(null, 'class', 'room');
-        newRoom.setAttributeNS(null, 'id', 300 + i);
+        newRoom.setAttributeNS(null, 'id', room);
         newRoom.setAttributeNS(null, 'x', x);
         newRoom.setAttributeNS(null, 'y', y);
         newRoom.setAttributeNS(null, 'width', w);
@@ -101,11 +106,18 @@ var makeDefault = function(map, w, h){
 }
     
 
-//var addPeople = function(){
-    //var period = $("#period");
-    //var IDs = $("#IDs");
-    //var room;
+var addPeople = function(){
+    var period = $("#period").attr('value');
+    var ids = [];
+    for (id in $("#ID")){
+	ids.push($("#ID")[id].value);
+    }
+    var room;
     
+    console.log(ids);
+    console.log(period);
+
+
     //console.log(IDs);
     
     /*
@@ -116,11 +128,11 @@ var makeDefault = function(map, w, h){
 	});
     }
     */
-//}
+}
 
     
 $(document).ready(function() {
     makeMap();
-    //addPeople();
+    addPeople();
 });
 

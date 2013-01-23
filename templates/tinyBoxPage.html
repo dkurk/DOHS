@@ -6,10 +6,12 @@
 <LINK rel ="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 
-<body bgcolor="">
+<body bgcolor="0808F7">
 
 <script src ="static/js/jquery.js"></script>
 <script src ="static/js/tinyBoxPage.js"></script>
+
+
 
 <h1 align ="center">
   <font face ="desdemona" size = 7>
@@ -23,7 +25,7 @@
 </div>
 
 <div align = "center">
-  <svg id="zoom-map" xmlns="http://www.w3.org/2000/svg" version="1.1" width="1200" height="400"></svg>
+  <svg id="zoom-map" xmlns="http://www.w3.org/2000/svg" version="1.1" width="700" height="400"></svg>
 </div>
 
 
@@ -31,7 +33,12 @@
 <form>
   <input type="text" style="display:none;" id="floor" value={{ floor }} />
 <input type="text" style="display:none;" id="period" value={{ period }} />
-<input type="text" style="display:none;" id="IDs" value={{ IDs }} />
+
+{% for id in IDs %}
+<input type="text" style="display:none;" id="ID" value= {{ id }} />
+<p> {{ id }} </p>
+{% endfor %}
+
 </form>
 
 </body>
