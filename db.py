@@ -371,21 +371,24 @@ def toString(ID):
     
     schedule = profile[4]
     
-    string = ''
-    string += '<p><b>ID:</b> ' + str(profile[0]) + '</p>'
-    string += '<p><b>Name:</b> ' + profile[1] +' '+ profile[2] + '</p>'
-    string += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
-    string += '<p><b>Schedule:</b></p>'
+    string1 = ''
+    string1 += '<p><b>ID:</b> ' + str(profile[0]) + '</p>'
+    string1 += '<p><b>Name:</b> ' + profile[1] +' '+ profile[2] + '</p>'
+    string1 += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
+   
+    string2 = ''
+    string 2+= '<p><b>Schedule:</b></p>'
 
     i = 0
     for period in schedule:
-        string += '<p><b>&nbsp&nbsp&nbsp&nbspPeriod</b>' +str(i + 1) + " : "
+        string2 += '<p><b>&nbsp&nbsp&nbsp&nbspPeriod</b>' +str(i + 1) + " : "
         if period > 0:
-            string += '<b>Room</b> ' + str(period) + '</p>'
+            string2 += '<b>Room</b> ' + str(period) + '</p>'
         else:
-            string += '</p>'
+            string2 += '</p>'
         i = i+1
     
+    string = [string1, string2]
     return string
 
 
