@@ -286,7 +286,9 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 def getTeacherLoc():
     global period
     last = request.args.get('last', '')
-        
+     
+    #last = "teacher"
+    
     value = db.getTeacherLoc(last, period)
     return json.dumps(value)
 
