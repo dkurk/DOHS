@@ -35,5 +35,5 @@ We have preadded the teachers based on their schedules (they are the red dots!) 
 
 
 
-**Link to App:**
+**Link to App:** http://ml7.stuycs.org:5404/
 -- 
