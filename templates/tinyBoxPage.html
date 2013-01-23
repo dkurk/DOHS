@@ -6,10 +6,9 @@
 <LINK rel ="stylesheet" type="text/css" href="static/css/style.css">
 </head>
 
-<body background ="static/jpg/blue_bars.jpg">
+<body bgcolor="">
 
 <script src ="static/js/jquery.js"></script>
-<script src ="static/js/tinybox.js"></script>
 <script src ="static/js/tinyBoxPage.js"></script>
 
 <h1 align ="center">
@@ -27,11 +26,13 @@
   <svg id="zoom-map" xmlns="http://www.w3.org/2000/svg" version="1.1" width="1200" height="400"></svg>
 </div>
 
-<div id="data">
-  <p id="floor" value={{floor}} />
-  <p id="period" value={{period}} />
-  <p id="IDs" value={{IDs}} />
-</div>
+
+
+<form>
+  <input type="text" style="display:none;" id="floor" value={{ floor }} />
+<input type="text" style="display:none;" id="period" value={{ period }} />
+<input type="text" style="display:none;" id="IDs" value={{ IDs }} />
+</form>
 
 </body>
 </html>

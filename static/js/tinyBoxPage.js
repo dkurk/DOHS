@@ -101,10 +101,10 @@ var makeDefault = function(map, w, h){
 }
     
 
-var addPeople = function(){
-    var period = $("#period");
-    var IDs = $("#IDs");
-    var room;
+//var addPeople = function(){
+    //var period = $("#period");
+    //var IDs = $("#IDs");
+    //var room;
     
     //console.log(IDs);
     
@@ -116,7 +116,7 @@ var addPeople = function(){
 	});
     }
     */
-}
+//}
 
     
 $(document).ready(function() {
