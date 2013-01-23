@@ -129,6 +129,10 @@ var addPeople = function(){
 
     var room;
     var period = $("#period").attr('value');
+    if (period == -1){
+	period = 1;
+    }
+
     var ids = [];
     for (var i = 0; i < $(".ID").length; i++){
 	ids.push($(".ID")[i].value);
@@ -213,8 +217,14 @@ var getProfile = function(evt) {
     });
 }
 
+var hideProfile = function() {
+    $("#restOfProfiles").empty();
+    $("#schedule").empty();
+}
+
 $(document).ready(function() {
     makeMap();
     addPeople();
+    $("#hideProfile").click(hideProfile);
 });
 
