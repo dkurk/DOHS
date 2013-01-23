@@ -218,7 +218,8 @@ var getProfile = function(evt) {
 }
 
 var hideProfile = function() {
-    
+    $("#restOfProfiles").empty();
+    $("#schedule").empty();
 }
 
 $(document).ready(function() {
