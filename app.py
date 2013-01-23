@@ -85,8 +85,8 @@ def account():
 
     else:
         button = request.form['button']
-        if button == "Account created. Click to log in!":
-            return redirect(url_for('login'))
+        if button == "Go back to the maps!":
+            return redirect(url_for('maps'))
 
 """
 Function: update()
@@ -301,12 +301,9 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/getTeacherLoc")
 def getTeacherLoc():
     global period
-    ulast = request.args.get('last', '')
-    last = ulast.lower() 
-    
-    #last = "zamansky"
-    #period = "6"
-    
+    clast = request.args.get('last', '')
+    last = ulast.title() 
+        
     value = db.getTeacherLoc(last, period)
     return json.dumps(value)
 
