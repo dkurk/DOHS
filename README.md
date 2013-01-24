@@ -27,13 +27,13 @@ The TWILIO component of our project allows the user to text the last name of any
 
 **Work Distribution:**
 
-    *Oliver Ball:* database backend (db.py)
+*Oliver Ball:* database backend (db.py)
 
-    *Shreya Kalva:* templates, styling, twilio
+*Shreya Kalva:* templates, styling, twilio
 
-    *David Kurkovskiy:* templates, JavaScript, app.py
+*David Kurkovskiy:* templates, JavaScript, app.py
 
-    *Helen Nie:* templates, JavaScript, app.py
+*Helen Nie:* templates, JavaScript, app.py
 
 
 
