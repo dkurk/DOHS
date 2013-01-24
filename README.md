@@ -19,6 +19,8 @@ In order to update your account, click the View/Update Your Profile button on th
 
 We have preadded the teachers based on their schedules (they are the red dots!) but the students who use Virtual Stuy will set up their own profiles and opt-in to the software!
 
+The TWILIO component of our project allows the user to text the last name of any teacher to the number (347)694-8704 and get the teacher's current room number as a response.
+
 *NOTE:* This could potentially be but is NOT meant to be a stalking device.
 
 
@@ -37,3 +39,5 @@ We have preadded the teachers based on their schedules (they are the red dots!) 
 
 **Link to App:** http://ml7.stuycs.org:5404/
 -- 
+**Twilio number:** (347)694-8704
+--
