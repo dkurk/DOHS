@@ -21,8 +21,10 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 global floor, period
 floor = period = 1
 global IDs 
-IDs = ["1111"]
+IDs = []
 
+global message
+message = ""
 
 
 """
@@ -54,22 +56,25 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 
 @app.route("/",methods=['GET','POST'])
 def login():
+    global message
     if request.method=='GET':
-        return render_template('login.html')
+        return render_template('login.html', message=message)
     else:
         ID = request.form['ID']
         button = request.form['button']
         if button == 'Login':
-            #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
             if db.userExists(ID):
                 session['ID'] = ID
+                message = ""
                 if 'redirectpage' in session:
                     return redirect(session['redirectpage'])
                 else:
                     return redirect(url_for('maps'))
             else:
+                message = "ID is not registered"
                 return redirect(url_for('login'))
         elif button == 'Register':
+            message = ""
             return redirect(url_for('account'))
 
 
