@@ -262,9 +262,11 @@ def get_students_by_grade(grade):
     grade = str(grade)
     for user in db:
         #print 'grade is: ' + str(db[user][3])
-        if db[user][3] == grade:
-            students.append(db[user])
-
+        try:
+            if db[user][3] == grade:
+                students.append(db[user])
+        except:
+            pass
     return students
 
 
