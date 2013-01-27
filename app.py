@@ -1,6 +1,7 @@
 from flask import request,Flask,render_template, url_for,redirect,request
 from flask import session
 from functools import wraps
+import time
 import urllib2,json
 import db
 import twilio.twiml
@@ -105,8 +106,10 @@ def update():
         button = request.form['button']
         if button == "Go back to the maps!":
             return redirect(url_for('maps'))
-        #if button == "Delete Account!":
-            #return redirect(url_for('login'))
+        if button == "Delete Account!":
+            time.sleep(2)
+            session.pop('ID',None)
+            return redirect(url_for('login'))
 
 
 """
