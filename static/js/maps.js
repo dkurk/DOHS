@@ -241,8 +241,10 @@ var setPeriod = function() {
 //varName = "";
 
 var zoom = function() {
-    //TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
-    var circles = $("circle", $(this));
+    var svgName = "#svg-" + $(this)[0].id.substring(5);
+    console.log(svgName);
+
+    var circles = $("circle", $(svgName));
     var ids = [];
     $(circles).each(function() {
 	ids.push($(this).attr("id"));
@@ -261,7 +263,7 @@ var zoom = function() {
 
     }*/
    
-    var svgID = ($(this).attr("id"));
+    var svgID = ($(svgName).attr("id"));
     var myFloor = svgID.substring(4);
 
     //console.log(myFloor);
@@ -318,16 +320,17 @@ $(document).ready(function() {
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
-    $("#svg-ten").click(zoom);
-    $("#svg-nine").click(zoom);
-    $("#svg-eight").click(zoom);
-    $("#svg-seven").click(zoom);
-    $("#svg-six").click(zoom);
-    $("#svg-five").click(zoom);
-    $("#svg-four").click(zoom);
-    $("#svg-three").click(zoom);
-    $("#svg-two").click(zoom);
-    $("#svg-one").click(zoom);
+
+    $("#zoom-ten").click(zoom);
+    $("#zoom-nine").click(zoom);
+    $("#zoom-eight").click(zoom);
+    $("#zoom-seven").click(zoom);
+    $("#zoom-six").click(zoom);
+    $("#zoom-five").click(zoom);
+    $("#zoom-four").click(zoom);
+    $("#zoom-three").click(zoom);
+    $("#zoom-two").click(zoom);
+    $("#zoom-one").click(zoom);
 
     setInterval(function() {
 	var pdBefore = currPd;
