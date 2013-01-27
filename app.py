@@ -19,7 +19,7 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 """
 
 global floor, period
-floor = period = 1
+floor = period = "1"
 global IDs 
 IDs = []
 
@@ -329,11 +329,19 @@ Last edited: 1/22/13 at 11:27 by Shreya Kalva
 @app.route("/smsTeacherRoom", methods=['GET', 'POST'])
 def smsTeacherRoom():
 	teacher = request.values.get('Body', None)
-	result = db.getTeacherLoc(teacher, period)
+        if period == "-1":
+            lResult = db.getTeacherLoc(teacher, "1")
+        else:
+            lResult = db.getTeacherLoc(teacher, period)
+        #lResult = [["Mr./Ms.", "Zamansky", -9], ["Mike", "Zamansky", "222"]]
+        result = ""
+        for person in lResult:
+            result += person[0] + " "
+            result += person[1] + ": "
+            result += str(person[2]) + "%0a"
 	response = twilio.twiml.Response()
 	response.sms(json.dumps(result))
 	return str(response)
-
 
 """
 Function: getPeriod()
@@ -345,7 +353,6 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 def getPeriod():
     global period
     period = request.args.get('period', '')
-    print period
     return json.dumps(True)
 
 """
@@ -358,6 +365,8 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print smsTeacherRoom()
+
     #print getTeacherLoc()
     #print
 
