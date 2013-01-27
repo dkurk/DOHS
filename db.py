@@ -125,6 +125,7 @@ def deleteUser(ID):
     if ID in db: 
         del db[ID]
         value = True
+    return value
 
 
 """
