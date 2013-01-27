@@ -111,7 +111,8 @@ var getProfile = function(evt) {
   
 	//JSON.stringify(person)	
     });
-
+    //scroll down automatically
+    $('html, body').animate({ scrollTop: $(document).height()},'50');
 }
 
 
