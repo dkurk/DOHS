@@ -156,8 +156,8 @@ var addPeople = function(){
 	    }
 	    //regular room numbers
 	    else{
-		var myX = (parseFloat($(roomId).attr('x')) + 5) + (Math.floor(Math.random() * (w - 20)));
-		var myY = (parseFloat($(roomId).attr('y')) + 5) + (Math.floor(Math.random() * (h - 20)));
+		var myX = (parseFloat($(roomId).attr('x')) + 10) + (Math.floor(Math.random() * (w - 20)));
+		var myY = (parseFloat($(roomId).attr('y')) + 10) + (Math.floor(Math.random() * (h - 20)));
 	    }
 
 	    var newCircle = document.createElementNS(svgns, "circle");
