@@ -273,9 +273,9 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/deleteUser")
 def deleteUser():
     myID = request.args.get('id', '')
+    #myID = "8751"
     boolean = db.deleteUser(myID)
     return json.dumps(boolean)
-
 
 
 
