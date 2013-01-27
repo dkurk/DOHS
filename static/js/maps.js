@@ -119,7 +119,12 @@ var getProfile = function(evt) {
 var loadMapsByGrade = function() {
 
     var grade = $(".choose-grade")[0].value;
-
+   
+    if (grade == "13"){
+	loadMaps();
+	return;
+    }
+	
     $.getJSON("/getPeopleByGrade", {grade:grade}, function(people) {
 	console.log(people);
 	
