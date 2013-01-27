@@ -19,8 +19,8 @@ var loadMaps = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
 	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
@@ -128,8 +128,8 @@ var loadMapsByGrade = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
 	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
@@ -212,7 +212,7 @@ var setPeriod = function() {
     //uncomment the next line to test during outside school hours
     //var currTime = "01/01/2011 09:09:09";
 
-    console.log(currTime);
+    //console.log(currTime);
 
     //makes a list of the beginnings of pds                          
     var pds = ["01/01/2011 08:00:00", "01/01/2011 08:45:00", 
