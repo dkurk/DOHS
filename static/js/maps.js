@@ -317,9 +317,91 @@ var zoom = function() {
     console.log("showing tiny box");
 }
 
+
 var loadMapsByPerson = function() {
     var id = $(".results")[0].value;
     console.log(id);
+    
+    $.getJSON("/getProfileItems", {id:id}, function(person) {
+	console.log(person);
+	
+	$(".person").remove();
+	var svgns = "http://www.w3.org/2000/svg";
+	var newCircle = document.createElementNS(svgns, "circle");
+	newCircle.setAttributeNS(null, 'class', 'person');
+	newCircle.setAttributeNS(null, 'id', person[0]);
+	newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
+	newCircle.setAttributeNS(null, 'r', 3);
+	newCircle.setAttributeNS(null, 'stroke', 'black');
+	var color;
+	switch (person[3]) {
+	case 0:
+	    color = "red";
+	    break;
+	case "9":
+	    color = "green";
+	    break;
+	case "10":
+	    color = "brown";
+	    break;
+	case "11":
+	    color = "magenta";
+	    break;
+	case "12":
+	    color = "yellow";
+	    break;
+	}
+	newCircle.setAttributeNS(null, 'fill', color);
+	newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
+	   
+	var f;
+	
+	try {
+	    //checks if currently outside school hours
+	    if (currPd == -1){
+		f = Math.floor(person[4][0] / 100);
+	    }
+	    else{
+		f = Math.floor(person[4][currPd -1] / 100);
+	    }
+	    
+	    switch (f){
+	    case 1:
+		$("#svg-one").append(newCircle);
+		break;
+	    case 2:
+		$("#svg-two").append(newCircle);
+		break;
+	    case 3:
+		$("#svg-three").append(newCircle);
+		break;
+	    case 4:
+		$("#svg-four").append(newCircle);
+		break;
+	    case 5:
+		$("#svg-five").append(newCircle);
+		break;
+	    case 6:
+		$("#svg-six").append(newCircle);
+		break;
+	    case 7:
+		$("#svg-seven").append(newCircle);
+		break;
+	    case 8:
+		$("#svg-eight").append(newCircle);
+		break;
+	    case 9:
+		$("#svg-nine").append(newCircle);
+		break;
+	    case 10:
+		$("#svg-ten").append(newCircle);
+		break;
+	    }
+	}
+	catch(err){
+	}
+    });
 }
 
 var loadResults = function() {
