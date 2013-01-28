@@ -8,6 +8,10 @@ body {
 	padding-left: 12px;
 }
 
+#instruc {
+        color:#FF9933;
+}
+
 #svg-label {
         color:white;
 	font-size: 18px;
