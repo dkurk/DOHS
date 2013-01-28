@@ -126,7 +126,7 @@ def deleteUser(ID):
         del db[ID]
         value = True
     return value
-
+    return value
 
 """
 Function:  get_schedule(string ID)
@@ -144,6 +144,40 @@ def get_schedule(ID):
         value = db[ID][4]
     db.close()
     return value
+
+
+"""
+Function:  getSearchResults(string fname, string lname)
+Purpose: Uses name to find possible matches
+Return: Returns a list of matches
+Last edited: 1/20/13 at 6:43 by Helen Nie
+"""
+
+def getSearchResults(fname, lname):
+    list = []    
+
+    db = shelve.open('people.db')
+    for person in db:
+        try:
+            if fname == db[person][1] and lname == db[person][2]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if fname == db[person][1] and not lname == db[person][2]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if lname == db[person][2] and not fname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    db.close()
+
+    return list
 
 
 """
