@@ -13,7 +13,7 @@ var makeMap = function() {
     var height = parseFloat(oddMap.attr("height"));
     
     //sets rows and columns
-    var cols = 20;
+    var cols = 21;
 
     //sets w h for each room
     var w = width / cols;
@@ -61,14 +61,22 @@ var makeDefault = function(oddMap, evenMap, floor, w, h){
     var x = 0;
     var y = 0;
     
+    var special = "gym";
+
     var svgns = "http://www.w3.org/2000/svg";
 
     oddMap.empty();
     evenMap.empty();
 
-    for (var i = 1; i < 41; i = i + 2) {
+    if (floor == 5)
+	special = "cafe";
+	
+    for (var i = 1; i < 43; i = i + 2) {
 	
 	room = floor * 100 + i;
+
+	if (i == 41)
+	    room = special;
 
         var newRoom = document.createElementNS(svgns, "rect");
         newRoom.setAttributeNS(null, 'class', 'room');
@@ -87,7 +95,7 @@ var makeDefault = function(oddMap, evenMap, floor, w, h){
 
     x = 0;
 
-    for (var i = 0; i < 41; i = i + 2) {
+    for (var i = 0; i < 43; i = i + 2) {
 	room = floor * 100 + i;
 	
         var newRoom = document.createElementNS(svgns, "rect");
@@ -120,7 +128,7 @@ var addPeople = function(){
     var height = parseFloat(oddMap.attr("height"));
     
     //sets rows and columns
-    var cols = 20;
+    var cols = 21;
     var rows = 3;
 
     //sets w h for each room
@@ -148,16 +156,21 @@ var addPeople = function(){
 	    var room = profile[4][period - 1];
 	    var roomId = '#' + room;
 
-	    //add cases for cafeteria, gym, nurses office, etc
-	    //this for now
-	    if (parseFloat(room) > (100 * floor + 40)){
-		var myX = (width - 10) - Math.floor(Math.random() * (w - 10));
-		var myY = Math.floor(Math.random() * h);
+	    //special cases
+	    if (parseFloat(room) == 500){
+		var myX = (parseFloat($("#cafe").attr('x')) + 10) + (Math.floor(Math.random() * (w - 20)));
+		var myY = (parseFloat($("#cafe").attr('y')) + 10) + (Math.floor(Math.random() * (h - 20)));
+		room = floor * 100 + 41;
+	    }
+	    else if (parseFloat(room) > floor * 100 + 40){
+		var myX = (parseFloat($("#gym").attr('x')) + 10) + (Math.floor(Math.random() * (w - 20)));
+		var myY = (parseFloat($("#gym").attr('y')) + 10) + (Math.floor(Math.random() * (h - 20)));
+		room = floor * 100 + 41;
 	    }
 	    //regular room numbers
 	    else{
-		var myX = (parseFloat($(roomId).attr('x')) + 5) + (Math.floor(Math.random() * (w - 20)));
-		var myY = (parseFloat($(roomId).attr('y')) + 5) + (Math.floor(Math.random() * (h - 20)));
+		var myX = (parseFloat($(roomId).attr('x')) + 10) + (Math.floor(Math.random() * (w - 20)));
+		var myY = (parseFloat($(roomId).attr('y')) + 10) + (Math.floor(Math.random() * (h - 20)));
 	    }
 
 	    var newCircle = document.createElementNS(svgns, "circle");

@@ -1,6 +1,7 @@
 from flask import request,Flask,render_template, url_for,redirect,request
 from flask import session
 from functools import wraps
+import time
 import urllib2,json
 import db
 import twilio.twiml
@@ -18,10 +19,12 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 """
 
 global floor, period
-floor = period = 1
+floor = period = "1"
 global IDs 
-IDs = ["1111"]
+IDs = []
 
+global message
+message = ""
 
 
 """
@@ -53,22 +56,25 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 
 @app.route("/",methods=['GET','POST'])
 def login():
+    global message
     if request.method=='GET':
-        return render_template('login.html')
+        return render_template('login.html', message=message)
     else:
         ID = request.form['ID']
         button = request.form['button']
         if button == 'Login':
-            #need ifUserExists(ID) method from db.py, is doesnt exist, direct to account page
             if db.userExists(ID):
                 session['ID'] = ID
+                message = ""
                 if 'redirectpage' in session:
                     return redirect(session['redirectpage'])
                 else:
                     return redirect(url_for('maps'))
             else:
+                message = "ID is not registered"
                 return redirect(url_for('login'))
         elif button == 'Register':
+            message = ""
             return redirect(url_for('account'))
 
 
@@ -105,8 +111,10 @@ def update():
         button = request.form['button']
         if button == "Go back to the maps!":
             return redirect(url_for('maps'))
-        #if button == "Delete Account!":
-            #return redirect(url_for('login'))
+        if button == "Delete Account!":
+            time.sleep(2)
+            session.pop('ID',None)
+            return redirect(url_for('login'))
 
 
 """
@@ -273,9 +281,9 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/deleteUser")
 def deleteUser():
     myID = request.args.get('id', '')
+    #myID = "8751"
     boolean = db.deleteUser(myID)
     return json.dumps(boolean)
-
 
 
 
@@ -321,7 +329,16 @@ Last edited: 1/22/13 at 11:27 by Shreya Kalva
 @app.route("/smsTeacherRoom", methods=['GET', 'POST'])
 def smsTeacherRoom():
 	teacher = request.values.get('Body', None)
-	result = db.getTeacherLoc(teacher, period)
+        if period == "-1":
+            lResult = db.getTeacherLoc(teacher, "1")
+        else:
+            lResult = db.getTeacherLoc(teacher, period)
+        #lResult = [["Mr./Ms.", "Zamansky", -9], ["Mike", "Zamansky", "222"]]
+        result = ""
+        for person in lResult:
+            result += person[0] + " "
+            result += person[1] + ": "
+            result += str(person[2]) + "%0a"
 	response = twilio.twiml.Response()
 	response.sms(json.dumps(result))
 	return str(response)
@@ -337,8 +354,27 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 def getPeriod():
     global period
     period = request.args.get('period', '')
-    print period
     return json.dumps(True)
+
+
+"""
+Function: getSearchResults()
+Purpose: uses the name provided by front end to match names stored in database
+Return: returns a list of possible names
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getSearchResults")
+def getSearchResults():
+    name = request.args.get('name', '')
+    name = name.split()
+    name.append("")
+    fname = name[0].title()
+    lname = name[1].title()
+    list = db.getSearchResults(fname, lname)
+    #list = [["8751", "Helen", "Nie", "12"], ["007", "James", "Bond", 0]] 
+    #list = []
+    return json.dumps(list)
+
 
 """
 Function: main
@@ -350,6 +386,8 @@ if __name__ == "__main__":
     app.debug=True
     app.run()
     
+    #print smsTeacherRoom()
+
     #print getTeacherLoc()
     #print
 

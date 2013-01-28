@@ -19,8 +19,8 @@ var loadMaps = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
 	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
@@ -111,14 +111,20 @@ var getProfile = function(evt) {
   
 	//JSON.stringify(person)	
     });
-
+    //scroll down automatically
+    $('html, body').animate({ scrollTop: $(document).height()},'50');
 }
 
 
 var loadMapsByGrade = function() {
 
     var grade = $(".choose-grade")[0].value;
-
+   
+    if (grade == "13"){
+	loadMaps();
+	return;
+    }
+	
     $.getJSON("/getPeopleByGrade", {grade:grade}, function(people) {
 	console.log(people);
 	
@@ -128,8 +134,8 @@ var loadMapsByGrade = function() {
 	    var newCircle = document.createElementNS(svgns, "circle");
 	    newCircle.setAttributeNS(null, 'class', 'person');
 	    newCircle.setAttributeNS(null, 'id', people[i][0]);
-	    newCircle.setAttributeNS(null, 'cx', Math.floor(5 + Math.random()*490));
-	    newCircle.setAttributeNS(null, 'cy', Math.floor(5 + Math.random()*40));
+	    newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	    newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
 	    newCircle.setAttributeNS(null, 'r', 3);
 	    newCircle.setAttributeNS(null, 'stroke', 'black');
 	    var color;
@@ -212,7 +218,7 @@ var setPeriod = function() {
     //uncomment the next line to test during outside school hours
     //var currTime = "01/01/2011 09:09:09";
 
-    console.log(currTime);
+    //console.log(currTime);
 
     //makes a list of the beginnings of pds                          
     var pds = ["01/01/2011 08:00:00", "01/01/2011 08:45:00", 
@@ -241,8 +247,10 @@ var setPeriod = function() {
 //varName = "";
 
 var zoom = function() {
-    //TINY.box.show({html: "<style> #svg-zoom {border-style:solid;} </style> <svg id='svg-zoom' xmlns='http://www.w3.org/2000/svg' version='1.1' width='400' height='400'></svg>", width:450, height:450});
-    var circles = $("circle", $(this));
+    var svgName = "#svg-" + $(this)[0].id.substring(5);
+    console.log(svgName);
+
+    var circles = $("circle", $(svgName));
     var ids = [];
     $(circles).each(function() {
 	ids.push($(this).attr("id"));
@@ -261,7 +269,7 @@ var zoom = function() {
 
     }*/
    
-    var svgID = ($(this).attr("id"));
+    var svgID = ($(svgName).attr("id"));
     var myFloor = svgID.substring(4);
 
     //console.log(myFloor);
@@ -305,8 +313,124 @@ var zoom = function() {
     });
 
     var content = '<Iframe Id="FrameTiny" Src="' + 'tinyBoxPage' + '" Width="100%" Height="100%" Scrolling="Yes" Frameborder="Yes" Marginwidth="10" Marginheight="10"></Iframe>';
-    TINY.box.show({html: content, width: 1000, height:600});
+    TINY.box.show({html: content, width: 1100, height:600});
     console.log("showing tiny box");
+}
+
+
+var loadMapsByPerson = function() {
+    var id = $(".results")[0].value;
+    console.log(id);
+    
+    $.getJSON("/getProfileItems", {id:id}, function(person) {
+	console.log(person);
+	
+	$(".person").remove();
+	var svgns = "http://www.w3.org/2000/svg";
+	var newCircle = document.createElementNS(svgns, "circle");
+	newCircle.setAttributeNS(null, 'class', 'person');
+	newCircle.setAttributeNS(null, 'id', person[0]);
+	newCircle.setAttributeNS(null, 'cx', 5 + Math.floor(Math.random()*490));
+	newCircle.setAttributeNS(null, 'cy', 5 + Math.floor(Math.random()*15));
+	newCircle.setAttributeNS(null, 'r', 3);
+	newCircle.setAttributeNS(null, 'stroke', 'black');
+	var color;
+	switch (person[3]) {
+	case 0:
+	    color = "red";
+	    break;
+	case "9":
+	    color = "green";
+	    break;
+	case "10":
+	    color = "brown";
+	    break;
+	case "11":
+	    color = "magenta";
+	    break;
+	case "12":
+	    color = "yellow";
+	    break;
+	}
+	newCircle.setAttributeNS(null, 'fill', color);
+	newCircle.setAttributeNS(null, 'onclick', 'getProfile(evt)');
+	   
+	var f;
+	
+	try {
+	    //checks if currently outside school hours
+	    if (currPd == -1){
+		f = Math.floor(person[4][0] / 100);
+	    }
+	    else{
+		f = Math.floor(person[4][currPd -1] / 100);
+	    }
+	    
+	    switch (f){
+	    case 1:
+		$("#svg-one").append(newCircle);
+		break;
+	    case 2:
+		$("#svg-two").append(newCircle);
+		break;
+	    case 3:
+		$("#svg-three").append(newCircle);
+		break;
+	    case 4:
+		$("#svg-four").append(newCircle);
+		break;
+	    case 5:
+		$("#svg-five").append(newCircle);
+		break;
+	    case 6:
+		$("#svg-six").append(newCircle);
+		break;
+	    case 7:
+		$("#svg-seven").append(newCircle);
+		break;
+	    case 8:
+		$("#svg-eight").append(newCircle);
+		break;
+	    case 9:
+		$("#svg-nine").append(newCircle);
+		break;
+	    case 10:
+		$("#svg-ten").append(newCircle);
+		break;
+	    }
+	}
+	catch(err){
+	}
+    });
+}
+
+var loadResults = function() {
+    var name = $("#searchName")[0].value;
+    console.log(name);
+    $.getJSON("/getSearchResults", {name:name}, function(list) {
+	console.log(list);
+
+	$(".results").empty();
+	if (list.length == 0)
+	    $(".results").append('<option value="'+'no'+'">'+'No Results'+'</option>');
+	else {
+	    $(".results").append('<option value="'+'no'+'">'+'Results Below'+'</option>');
+	    for (person in list){
+		$(".results").append('<option value="'+list[person][0]+'">'+list[person][1]+' '+list[person][2]+', '+list[person][3]+'</option>');
+	    }
+	}
+    });
+    $(".results").show();
+    $(".results").change(loadMapsByPerson);
+}
+
+
+var enterKey = function(){
+    e = window.event;
+    if(e.which == 13) {
+	e.preventDefault();
+	$('#search').click();
+    }
 }
  
 $(document).ready(function() {
@@ -315,19 +439,22 @@ $(document).ready(function() {
     console.log(now);
     $.getJSON("/getPeriod", {period:now}, function(data) {
     });
+
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
-    $("#svg-ten").click(zoom);
-    $("#svg-nine").click(zoom);
-    $("#svg-eight").click(zoom);
-    $("#svg-seven").click(zoom);
-    $("#svg-six").click(zoom);
-    $("#svg-five").click(zoom);
-    $("#svg-four").click(zoom);
-    $("#svg-three").click(zoom);
-    $("#svg-two").click(zoom);
-    $("#svg-one").click(zoom);
+    $("#search").click(loadResults);
+
+    $("#zoom-ten").click(zoom);
+    $("#zoom-nine").click(zoom);
+    $("#zoom-eight").click(zoom);
+    $("#zoom-seven").click(zoom);
+    $("#zoom-six").click(zoom);
+    $("#zoom-five").click(zoom);
+    $("#zoom-four").click(zoom);
+    $("#zoom-three").click(zoom);
+    $("#zoom-two").click(zoom);
+    $("#zoom-one").click(zoom);
 
     setInterval(function() {
 	var pdBefore = currPd;
