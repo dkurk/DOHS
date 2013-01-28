@@ -1,6 +1,6 @@
 /**
 * Makes a person object
-* @param : string id, string first, string last, string grade, string rooms
+* @param : string id, string first, string last, string grade, list rooms
 * @return : N/A
 */
 
