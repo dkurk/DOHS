@@ -1,14 +1,11 @@
-/*func loadMaps()
-**@params: none
-**This function calls the serve method "getPeople" and pulls out a list of people dictionaries, consisting of student users and pre-added teachers from the database. For each person, it creates a new <circle> element that will be added to the svg that corresponds with the floor this user/teacher should be on during first period. A later update method will respond to changes in floor
-*/
-
-
-
 //sets the current period as a global variable
 var currPd;
 
-
+/**
+* Loads student/teacher location onto svgs based on period
+* @param: none
+* @return: none
+**/
 var loadMaps = function() {
 
     $.getJSON("/getPeople", function(people) {
@@ -95,10 +92,11 @@ var loadMaps = function() {
 }
 
 
-/*func getProfile()
-**@params: none
-**This function, assigned on click to each bubble representing a student or teacher on the 10 svg maps takes the ID number/keyword of the clicked user and calls the "getProfile" server-side method to return the object the bubble represents. The profile information of this user/teacher will then be printed on a div at the bottom of the page. 
-*/
+/**
+* Takes id of a particular bubble; displays profile at bottom
+* @params: each bubble is tied to the event
+* @return: compiles String representing profile from server 
+**/
 var getProfile = function(evt) {
     var circle = evt.target;
     var myID = circle.getAttribute("id");
@@ -115,6 +113,11 @@ var getProfile = function(evt) {
     $('html, body').animate({ scrollTop: $(document).height()},'50');
 }
 
+/**
+* Based on the value of the grades drop down, loads the bubbles of that grade
+* @params: option chosen in grades drop-down
+* @return: none
+**/
 
 var loadMapsByGrade = function() {
 
@@ -210,7 +213,11 @@ var loadMapsByGrade = function() {
     });
 }
 
-
+/**
+* Changes currentPeriod based on current time. Default is 1st pd.
+* @params: none
+* @return: none
+**/
 var setPeriod = function() {
     //gets current time in a string
     var currTime = "01/01/2011 ".concat(new Date().toString().split(" ")[4]);
@@ -246,6 +253,11 @@ var setPeriod = function() {
 
 //varName = "";
 
+/**
+* Opens up tiny box with location-specific map upon clicking zoom button
+* @params: each zoom button for each floor is bound to the event
+* @return: calls the tinyBoxPage with a more specific zoomed map
+**/
 var zoom = function() {
     var svgName = "#svg-" + $(this)[0].id.substring(5);
     console.log(svgName);
@@ -317,6 +329,11 @@ var zoom = function() {
     console.log("showing tiny box");
 }
 
+/**
+* Based on person found by the keyword search, loads that one person on map. 
+* @param: chosen result after keyword search
+* @returns: none
+**/
 
 var loadMapsByPerson = function() {
     var id = $(".results")[0].value;
@@ -404,6 +421,12 @@ var loadMapsByPerson = function() {
     });
 }
 
+/**
+* takes search keyword and returns a list of result in a drop down
+* @params: name typed into search bar
+* @return: list of results that can be clicked on
+**/
+
 var loadResults = function() {
     var name = $("#searchName")[0].value;
     console.log(name);
@@ -424,7 +447,11 @@ var loadResults = function() {
     $(".results").change(loadMapsByPerson);
 }
 
-
+/**
+* Binds search bar to respond to enter
+* @params: none
+* @return: none
+**/
 var enterKey = function(){
     e = window.event;
     if(e.which == 13) {
@@ -434,17 +461,23 @@ var enterKey = function(){
 }
  
 $(document).ready(function() {
+    //finds the initial period
     setPeriod();
     var now = currPd;
     console.log(now);
+    //tells server the initial period
     $.getJSON("/getPeriod", {period:now}, function(data) {
     });
 
+    //loads the initial map
     loadMaps();
 
+    //when grade is changed, reloads map with that specific grade
     $(".choose-grade").change(loadMapsByGrade);
+    //binds search button to display a list of results based on keyword
     $("#search").click(loadResults);
 
+    //binds all the zoom buttons to the zoom function to go into the tinybox
     $("#zoom-ten").click(zoom);
     $("#zoom-nine").click(zoom);
     $("#zoom-eight").click(zoom);
@@ -456,6 +489,7 @@ $(document).ready(function() {
     $("#zoom-two").click(zoom);
     $("#zoom-one").click(zoom);
 
+    //constantly checks to see if the period changed, and if so tells server
     setInterval(function() {
 	var pdBefore = currPd;
 	setPeriod();
