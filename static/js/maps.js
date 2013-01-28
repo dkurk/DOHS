@@ -423,6 +423,15 @@ var loadResults = function() {
     $(".results").show();
     $(".results").change(loadMapsByPerson);
 }
+
+
+var enterKey = function(){
+    e = window.event;
+    if(e.which == 13) {
+	e.preventDefault();
+	$('#search').click();
+    }
+}
  
 $(document).ready(function() {
     setPeriod();
@@ -430,6 +439,7 @@ $(document).ready(function() {
     console.log(now);
     $.getJSON("/getPeriod", {period:now}, function(data) {
     });
+
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
