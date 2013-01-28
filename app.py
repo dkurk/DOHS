@@ -343,6 +343,7 @@ def smsTeacherRoom():
 	response.sms(json.dumps(result))
 	return str(response)
 
+
 """
 Function: getPeriod()
 Purpose: gets current period
@@ -354,6 +355,22 @@ def getPeriod():
     global period
     period = request.args.get('period', '')
     return json.dumps(True)
+
+
+"""
+Function: getSearchResults()
+Purpose: uses the name provided by front end to match names stored in database
+Return: returns a list of possible names
+Last edited: 1/21/13 at 12:24 by Helen Nie
+"""
+@app.route("/getSearchResults")
+def getSearchResults():
+    name = request.args.get('name', '')
+    #list = db.getSearchResults(name)
+    list = [["8751", "Helen", "Nie", "12"], ["007", "James", "Bond", 0]] 
+    #list = []
+    return json.dumps(list)
+
 
 """
 Function: main
