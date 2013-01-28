@@ -9,7 +9,9 @@ body {
 }
 
 #svg-label {
-        color:red;
+        color:white;
+	font-size: 18px;
+	font-weight:900;
 }
 
 #zoom-map {
