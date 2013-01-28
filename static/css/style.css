@@ -1,5 +1,5 @@
 body { 
-	background-image:url("/static/jpg/blue_bars.jpg");
+        background-image:url("/static/jpg/blue_bars.jpg");
 	font-family: centurygothic;
 	font-size: 16px;
 	color:white;
@@ -8,6 +8,9 @@ body {
 	padding-left: 12px;
 }
 
+#svg-label {
+        color:red;
+}
 
 #zoom-map {
 	border-style: solid;
@@ -16,52 +19,52 @@ body {
 
 #svg-ten {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-nine {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-eight {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-seven {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-six {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-five {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-four {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-three {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-two {
 	border-style: solid;
-
+	border-color: white;
 }
 
 #svg-one {
 	border-style: solid;
-
+	border-color: white;
 }
 
 
