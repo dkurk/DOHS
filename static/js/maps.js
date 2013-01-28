@@ -316,6 +316,31 @@ var zoom = function() {
     TINY.box.show({html: content, width: 1100, height:600});
     console.log("showing tiny box");
 }
+
+var loadMapsByPerson = function() {
+    var id = $(".results")[0].value;
+    console.log(id);
+}
+
+var loadResults = function() {
+    var name = $("#searchName")[0].value;
+    console.log(name);
+    $.getJSON("/getSearchResults", {name:name}, function(list) {
+	console.log(list);
+
+	$(".results").empty();
+	if (list.length == 0)
+	    $(".results").append('<option value="'+'no'+'">'+'No Results'+'</option>');
+	else {
+	    $(".results").append('<option value="'+'no'+'">'+'Results Below'+'</option>');
+	    for (person in list){
+		$(".results").append('<option value="'+list[person][0]+'">'+list[person][1]+' '+list[person][2]+', '+list[person][3]+'</option>');
+	    }
+	}
+    });
+    $(".results").show();
+    $(".results").change(loadMapsByPerson);
+}
  
 $(document).ready(function() {
     setPeriod();
@@ -326,6 +351,7 @@ $(document).ready(function() {
     loadMaps();
 
     $(".choose-grade").change(loadMapsByGrade);
+    $("#search").click(loadResults);
 
     $("#zoom-ten").click(zoom);
     $("#zoom-nine").click(zoom);
