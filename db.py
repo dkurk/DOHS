@@ -165,6 +165,12 @@ def getSearchResults(fname, lname):
             pass
     for person in db:
         try:
+            if fname == db[person][2] and lname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
             if fname == db[person][1] and not lname == db[person][2]:
                 list.append(db[person])
         except:
@@ -172,6 +178,18 @@ def getSearchResults(fname, lname):
     for person in db:
         try:
             if lname == db[person][2] and not fname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if fname == db[person][2] and not lname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if lname == db[person][1] and not fname == db[person][2]:
                 list.append(db[person])
         except:
             pass
