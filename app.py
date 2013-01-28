@@ -366,8 +366,11 @@ Last edited: 1/21/13 at 12:24 by Helen Nie
 @app.route("/getSearchResults")
 def getSearchResults():
     name = request.args.get('name', '')
-    #list = db.getSearchResults(name)
-    list = [["8751", "Helen", "Nie", "12"], ["007", "James", "Bond", 0]] 
+    fname, lname = name.split()
+    fname = fname.title()
+    lname = lname.title()
+    list = db.getSearchResults(fname, lname)
+    #list = [["8751", "Helen", "Nie", "12"], ["007", "James", "Bond", 0]] 
     #list = []
     return json.dumps(list)
 
