@@ -471,6 +471,13 @@ def start_fresh():
 
     return str(db)
 
+"""
+Function: find_max_floor()
+Purpose: Finds the largest room number on each floor
+Return: list of the rooms
+
+Last edited 1/21/13 at 7:08 by Oliver Ball
+"""
 
 def find_max_floor():
     db = shelve.open('people.db')
@@ -500,17 +507,46 @@ def dump():
     print db
     db.close()
 
+
+"""
+Function: nice_dump()
+Purpose: Just prints out a nicer looking dump of the database. Simple stuff.
+Return: No return.
+
+Last edited 1/20/13 at 8:40 by Oliver Ball
+"""
+
 def nice_dump():
     db = shelve.open('people.db')
     for ID in db:
         print nice_toString(ID)
     db.close()
 
+
+"""
+Function: dumplog()
+Purpose: prints the log
+Return: no return
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
+
 def dumplog():
     print 'Dumping Log:'
     log = shelve.open('name_log.db')
     print log
     log.close()
+
+
+"""
+Function:  toString()
+Purpose: Create an easy to read string for a given ID and its corresponding profile.
+Return: A formatted string.
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
 
 def nice_toString(ID):
     ID = str(ID)
