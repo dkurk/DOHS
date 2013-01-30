@@ -125,7 +125,8 @@ def deleteUser(ID):
     if ID in db: 
         del db[ID]
         value = True
-
+    return value
+    return value
 
 """
 Function:  get_schedule(string ID)
@@ -143,6 +144,58 @@ def get_schedule(ID):
         value = db[ID][4]
     db.close()
     return value
+
+
+"""
+Function:  getSearchResults(string fname, string lname)
+Purpose: Uses name to find possible matches
+Return: Returns a list of matches
+Last edited: 1/20/13 at 6:43 by Helen Nie
+"""
+
+def getSearchResults(fname, lname):
+    list = []    
+
+    db = shelve.open('people.db')
+    for person in db:
+        try:
+            if fname == db[person][1] and lname == db[person][2]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if fname == db[person][2] and lname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if fname == db[person][1] and not lname == db[person][2]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if lname == db[person][2] and not fname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if fname == db[person][2] and not lname == db[person][1]:
+                list.append(db[person])
+        except:
+            pass
+    for person in db:
+        try:
+            if lname == db[person][1] and not fname == db[person][2]:
+                list.append(db[person])
+        except:
+            pass
+    db.close()
+
+    return list
 
 
 """
@@ -259,11 +312,16 @@ def get_students_by_grade(grade):
     db = shelve.open("people.db", writeback=False)
     students = []
     grade = str(grade)
+    #checks for grade 0
+    if grade == "0":
+        grade = 0
     for user in db:
         #print 'grade is: ' + str(db[user][3])
-        if db[user][3] == grade:
-            students.append(db[user])
-
+        try:
+            if db[user][3] == grade:
+                students.append(db[user])
+        except:
+            pass
     return students
 
 
@@ -377,7 +435,7 @@ def toString(ID):
     string1 += '<p><b>Grade:</b> ' + gradelist[str(profile[3])] + '</p>'
    
     string2 = ''
-    string 2+= '<p><b>Schedule:</b></p>'
+    string2 += '<p><b>SCHEDULE:</b></p>'
 
     i = 0
     for period in schedule:
@@ -413,6 +471,13 @@ def start_fresh():
 
     return str(db)
 
+"""
+Function: find_max_floor()
+Purpose: Finds the largest room number on each floor
+Return: list of the rooms
+
+Last edited 1/21/13 at 7:08 by Oliver Ball
+"""
 
 def find_max_floor():
     db = shelve.open('people.db')
@@ -442,17 +507,46 @@ def dump():
     print db
     db.close()
 
+
+"""
+Function: nice_dump()
+Purpose: Just prints out a nicer looking dump of the database. Simple stuff.
+Return: No return.
+
+Last edited 1/20/13 at 8:40 by Oliver Ball
+"""
+
 def nice_dump():
     db = shelve.open('people.db')
     for ID in db:
         print nice_toString(ID)
     db.close()
 
+
+"""
+Function: dumplog()
+Purpose: prints the log
+Return: no return
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
+
 def dumplog():
     print 'Dumping Log:'
     log = shelve.open('name_log.db')
     print log
     log.close()
+
+
+"""
+Function:  toString()
+Purpose: Create an easy to read string for a given ID and its corresponding profile.
+Return: A formatted string.
+Tested: Yes
+
+Last edited: 1/20/13 at 7:28 by Oliver Ball
+"""
 
 def nice_toString(ID):
     ID = str(ID)
