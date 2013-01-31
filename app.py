@@ -328,21 +328,22 @@ Last edited: 1/22/13 at 11:27 by Shreya Kalva
 
 @app.route("/smsTeacherRoom", methods=['GET', 'POST'])
 def smsTeacherRoom():
-	teacher = request.values.get('Body', None)
-        if period == "-1":
-            lResult = db.getTeacherLoc(teacher, "1")
-        else:
-            lResult = db.getTeacherLoc(teacher, period)
-        #lResult = [["Mr./Ms.", "Zamansky", -9], ["Mike", "Zamansky", "222"]]
-        result = ""
-        for person in lResult:
-            result += person[0] + " "
-            result += person[1] + ": "
-            result += str(person[2]) + "%0a"
-	response = twilio.twiml.Response()
-	response.sms(json.dumps(result))
-	return str(response)
-
+    global period
+    lResult = []
+    result = ""
+    teacher = request.values.get('Body', None)
+    if period == "-1": 
+        lResult = db.getTeacherLoc(teacher, "1")
+    else:
+        lResult = db.getTeacherLoc(teacher, period)
+    for person in lResult:
+        result += person[0] + " "
+        result += person[1] + ": "
+        result += str(person[2]) + ". "
+    response = twilio.twiml.Response()
+    response.sms(json.dumps(result))
+    return str(response)
+        
 
 """
 Function: getPeriod()
