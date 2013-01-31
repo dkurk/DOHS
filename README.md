@@ -7,6 +7,8 @@ VIRTUAL STUY
 
 **General Description:** Welcome to Virtual Stuy! This is an implementation of a geographic social network for schools, businesses, any place where you'd find a lot of people! We specifically made it to represent Stuy, but it can easily be adapted for future semesters as well as for other schools. 
 
+**Installations:** Flask
+
 **User Manual:** 
 
 In order to enter your information/schedule click on the Register button. Enter in your ID, First name, Last name, grade, and the room number of all your classes periods 1 to 10. If you don't have a class that period you can either enter the floor you are usually on during that period times 100 (e.g. 500 if you are on the 5th floor) or -1.
