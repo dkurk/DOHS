@@ -2,6 +2,7 @@ VIRTUAL STUY
 ====
 
 **Project Title:** Virtual Stuy
+**Link to App:** http://ml7.stuycs.org:5404/
 
 **Group Members:** Oliver Ball, Shreya Kalva, David Kurkovskiy, Helen Nie
 
@@ -39,7 +40,6 @@ The TWILIO component of our project allows the user to text the last name of any
 
 
 
-**Link to App:** http://ml7.stuycs.org:5404/
 -- 
 **Twilio number:** (347)694-8704
 --
