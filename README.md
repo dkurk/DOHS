@@ -1,7 +1,7 @@
 VIRTUAL STUY
 ====
 
-**Project Title:** Virtual Stuy
+**Project Title:** Virtual Stuy  
 **Link to App:** http://ml7.stuycs.org:5404/
 
 **Group Members:** Oliver Ball, Shreya Kalva, David Kurkovskiy, Helen Nie
